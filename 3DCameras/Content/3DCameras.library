@@ -1,0 +1,7 @@
+ContentLibrary = 
+{
+	string Name = "3DCameras",
+	uint64 LibraryId = 580695a0f661403f,
+	string SourceControlType = "",
+	bool ReadOnly = false,
+},
