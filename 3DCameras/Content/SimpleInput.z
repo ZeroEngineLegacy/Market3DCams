@@ -1,0 +1,193 @@
+class CharLookEvent : ZilchEvent
+{
+    sends CharLookEvent : CharLookEvent;
+    var LookDir : Real2 = Real2();
+}
+
+class CharMoveEvent : ZilchEvent
+{
+    sends CharMoveEvent : CharMoveEvent;
+    var MoveDir : Real3 = Real3();
+    var Dt : Real = 0.0;
+}
+
+class CharJumpEvent : ZilchEvent
+{
+    sends CharJumpEvent : CharJumpEvent;
+}
+
+
+class EnableInput : ZilchEvent
+{
+    sends EnableInput : EnableInput;
+}
+
+class DisableInput : ZilchEvent
+{
+    sends DisableInput : DisableInput;
+}
+
+class InputInterpreter : ZilchComponent
+{
+    [Dependency]
+    var Orientation : Orientation;
+    
+    [Dependency]
+    var SweptController : SweptController;
+    
+    var InputEnabled : Boolean = true;
+    
+    [Property]
+    var ForwardKey : Keys = Keys.W;
+    
+    [Property]
+    var BackwardKey : Keys = Keys.S;
+    
+    [Property]
+    var LeftKey : Keys = Keys.A;
+    
+    [Property]
+    var RightKey : Keys = Keys.D;
+    
+    [Property]
+    var MouseSensitivity : Real2 = Real2(1.0,1.0);
+    
+    [Property]
+    var KeyboardRotSpeed : Real = 3.0;
+    
+    [Property]
+    var JumpKey : Keys = Keys.Space;
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Mouse.Trapped = true;
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        Zero.Connect(this.Space, Events.MouseMove, this.OnMouseMove);
+        Zero.Connect(this.Owner, Events.EnableInput, this.OnEnableInput);
+        Zero.Connect(this.Owner, Events.DisableInput, this.OnDisableInput);
+    }
+
+    function OnEnableInput(event : ZilchEvent)
+    {
+        this.InputEnabled = true;
+    }
+
+    function OnDisableInput(event : ZilchEvent)
+    {
+        this.InputEnabled = false;
+    }
+
+    function OnMouseMove(event : ViewportMouseEvent)
+    {
+        if(!this.InputEnabled)
+            return;
+            
+        //Console.WriteLine("MouseMove");
+        var lookDir = Real2(-event.Movement.X * this.MouseSensitivity.X, event.Movement.Y * this.MouseSensitivity.Y);
+        
+        var lookEvent = CharLookEvent();
+        lookEvent.LookDir = lookDir;
+        this.Owner.DispatchDown(Events.CharLookEvent, lookEvent);
+    }
+
+    function OnLogicUpdate(event : UpdateEvent)
+    {
+        if(!this.InputEnabled)
+            return;
+            
+        var moveDir = Real3();
+        if(Zero.Keyboard.KeyIsDown(this.ForwardKey))
+            moveDir.Y += 1;
+        if(Zero.Keyboard.KeyIsDown(this.BackwardKey))
+            moveDir.Y += -1;
+            
+        
+        if(Zero.Keyboard.KeyIsDown(this.LeftKey))
+            moveDir.X += 1;
+        if(Zero.Keyboard.KeyIsDown(this.RightKey))
+            moveDir.X += -1;
+        
+        if(Zero.Keyboard.KeyIsPressed(this.JumpKey))
+        {
+            this.Owner.DispatchEvent(Events.CharJumpEvent, CharJumpEvent());
+            this.Owner.DispatchDown(Events.CharJumpEvent, CharJumpEvent());
+        }
+        
+        var moveEvent = CharMoveEvent();
+        moveEvent.MoveDir = moveDir;
+        moveEvent.Dt = event.Dt;
+        this.Owner.DispatchEvent(Events.CharMoveEvent, moveEvent);
+        this.Owner.DispatchDown(Events.CharMoveEvent, moveEvent);
+    }
+}
+
+class CharReorientEvent : ZilchEvent
+{
+    sends CharReorientEvent : CharReorientEvent;
+    var OrientDir : Real3 = Real3();
+}
+
+class CharMoveController : ZilchComponent
+{
+    [Dependency]
+    var Orientation : Orientation;
+    
+    [Dependency]
+    var OrientationHelper : OrientationHelper;
+    
+    [Dependency]
+    var SweptController : SweptController;
+    
+    //Speed at which the character will rotate in oreder orient itself
+    [Property]
+    var OrientSpeed : Real = 7.0;
+    
+    //If the character model currently rotating idenpendently to reorient itself with the camera Y-Axis WorldRotation
+    var Orienting : Boolean = false;
+    //Direction the player should be facing upon completing reorientation
+    var OrientDir : Real3 = Real3();
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        Zero.Connect(this.Owner, Events.CharReorientEvent, this.OnCharReorientEvent);
+        Zero.Connect(this.Owner, Events.CharMoveEvent, this.OnCharMoveEvent);
+        Zero.Connect(this.Owner, Events.CharJumpEvent, this.OnCharJumpEvent);
+    }
+
+    function OnCharJumpEvent(event : CharJumpEvent)
+    {
+        this.SweptController.Jump();
+    }
+
+    function OnLogicUpdate(event : UpdateEvent)
+    {
+        if(!this.Orienting)
+            return;
+        
+        //Get character target rotation quaterion
+        var targRot = this.Orientation.GetLookAtDirectionWithUpRotation(this.OrientDir, Real3(0,1,0));
+        //Calculate new character rotation by interpolating towards target rotation
+        var newRot = Math.Slerp(this.Owner.Transform.Rotation, targRot, Math.ToRadians(this.OrientSpeed) * event.Dt);
+        //Set new character rotation
+        this.Owner.Transform.Rotation = newRot;
+        //Set Orienting state to false 
+        this.Orienting = false;
+    }
+
+    //CharReorientEvent is dispatched each frame the character should be reorienting
+    function OnCharReorientEvent(event : CharReorientEvent)
+    {
+        //Direction the characer model should orient towards
+        this.OrientDir = event.OrientDir;
+        //Set Orienting state to true
+        this.Orienting = true;
+    }
+
+    function OnCharMoveEvent(event : CharMoveEvent)
+    {
+        //Update the SweptController with the forward value of the move direction
+        this.Owner.Transform.RotateAnglesWorld(event.MoveDir.X * event.Dt * Real3(0,Math.ToRadians(this.OrientSpeed), 0));
+        this.SweptController.Update(event.MoveDir.Y * this.Orientation.WorldForward, event.Dt);
+    }
+}

@@ -22,8 +22,8 @@ Level =
 		{
 			bool Active = true,
 			bool WakeUpOnChange = false,
-			float Drag = 0.7,
-			float AngularDrag = 0.1,
+			float Drag = 0.699999988,
+			float AngularDrag = 0.100000001,
 		},
 		GridDraw = 
 		{
@@ -53,17 +53,17 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 12.9409533, 48.2962952],
+			Vec3 Translation = [12.9992609, 0.639055252, -1.44730759],
 			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [-0.130526185, -1.10221432e-08, -2.85274071e-09, 0.991444945],
+			Quat Rotation = [0.0433474593, 0.852365017, -0.0715753734, 0.516209126],
 		},
 		Camera = 
 		{
-			PerspectiveMode PerspectiveMode = Perspective,
 			Facing Facing = NegativeZ,
-			float FieldOfView = 45,
 			float NearPlane = 0.5,
 			float FarPlane = 500,
+			PerspectiveMode PerspectiveMode = Perspective,
+			float FieldOfView = 45,
 			float Size = 20,
 		},
 		CameraViewport = 
@@ -71,9 +71,10 @@ Level =
 			bool RenderInEditor = true,
 			bool RenderInGame = false,
 			bool RenderToViewport = true,
+			bool ForwardViewportEvents = false,
 			uint RenderOrder = 0,
-			Vec2 Offset = [0, 0],
-			Vec2 Size = [1, 1],
+			Vec2 NormalizedSize = [1, 1],
+			Vec2 NormalizedOffset = [0, 0],
 			CogPath Camera = 
 			{
 				string Path = ".",
@@ -89,7 +90,24 @@ Level =
 				CogPathPreference PathPreference1 = SpaceRelative,
 				CogPathPreference PathPreference2 = Absolute,
 			},
+			CogPath Renderer = 
+			{
+				string Path = ".",
+				bool ErrorOnResolveToNull = false,
+				bool ErrorOnPathCantCompute = false,
+				bool ErrorOnDirectLinkFail = false,
+				bool UpdateCogOnPathChange = true,
+				bool UpdatePathOnCogChange = true,
+				bool UpdateCogOnInitialize = true,
+				bool ResolvedNullErrorOccurred = false,
+				uint ResolvedCog = 2,
+				CogPathPreference PathPreference0 = CogRelative,
+				CogPathPreference PathPreference1 = SpaceRelative,
+				CogPathPreference PathPreference2 = Absolute,
+			},
 			Vec2 Resolution = [1280, 720],
+			ViewportScaling ViewportScaling = Fill,
+			Vec4 MarginColor = [0, 0, 0, 1],
 		},
 		DefaultRenderer = 
 		{
@@ -99,10 +117,10 @@ Level =
 		EditorCameraController = 
 		{
 			ControlMode ControlMode = Orbit,
-			float LookDistance = 50,
-			float VerticalAngle = 0.261799395,
-			float HorizontalAngle = 0,
-			Vec3 LookTarget = [0, 0, 0],
+			float LookDistance = 13.0616589,
+			float VerticalAngle = -0.167552277,
+			float HorizontalAngle = -2.05250978,
+			Vec3 LookTarget = [1.58608782, 2.81734037, 4.51939249],
 			float MoveSensitivity = 1,
 		},
 	},
@@ -118,53 +136,305 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, 0, 50],
+			Vec3 Translation = [0, 2.51720333, 0],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [-0, 1, -0, -4.37113883e-08],
+		},
+		Camera = 
+		{
+			Facing Facing = NegativeZ,
+			float NearPlane = 0.5,
+			float FarPlane = 100,
+			PerspectiveMode PerspectiveMode = Perspective,
+			float FieldOfView = 45,
+			float Size = 20,
+		},
+		CameraViewport = 
+		{
+			bool RenderInEditor = false,
+			bool RenderInGame = true,
+			bool RenderToViewport = true,
+			bool ForwardViewportEvents = true,
+			uint RenderOrder = 0,
+			Vec2 NormalizedSize = [1, 1],
+			Vec2 NormalizedOffset = [0, 0],
+			CogPath Camera = 
+			{
+				string Path = ".",
+				bool ErrorOnResolveToNull = false,
+				bool ErrorOnPathCantCompute = false,
+				bool ErrorOnDirectLinkFail = false,
+				bool UpdateCogOnPathChange = true,
+				bool UpdatePathOnCogChange = true,
+				bool UpdateCogOnInitialize = true,
+				bool ResolvedNullErrorOccurred = false,
+				uint ResolvedCog = 3,
+				CogPathPreference PathPreference0 = CogRelative,
+				CogPathPreference PathPreference1 = SpaceRelative,
+				CogPathPreference PathPreference2 = Absolute,
+			},
+			CogPath Renderer = 
+			{
+				string Path = ".",
+				bool ErrorOnResolveToNull = false,
+				bool ErrorOnPathCantCompute = false,
+				bool ErrorOnDirectLinkFail = false,
+				bool UpdateCogOnPathChange = true,
+				bool UpdatePathOnCogChange = true,
+				bool UpdateCogOnInitialize = true,
+				bool ResolvedNullErrorOccurred = false,
+				uint ResolvedCog = 3,
+				CogPathPreference PathPreference0 = CogRelative,
+				CogPathPreference PathPreference1 = SpaceRelative,
+				CogPathPreference PathPreference2 = Absolute,
+			},
+			Vec2 Resolution = [1280, 720],
+			ViewportScaling ViewportScaling = Fill,
+			Vec4 MarginColor = [0, 0, 0, 1],
+		},
+		DefaultRenderer = 
+		{
+			Vec4 ClearColor = [0.329999983, 0.329999983, 0.329999983, 1],
+			bool DrawDebug = true,
+		},
+		Orientation = 
+		{
+			Vec3 GlobalUp = [0, 1, 0],
+			Vec3 UpVector = [0, 1, 0],
+			Vec3 ForwardVector = [-0, -0, -1],
+			OrientationBases DefaultBases = ForwardNegativeZUpY,
+		},
+		SphereCollider = 
+		{
+			bool Ghost = true,
+			bool SendsEvents = true,
+			string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+			string CollisionGroup = "4e740859314e5515:DefaultGroup",
+			Vec3 Offset = [0, 0, 0],
+			float Radius = 1,
+		},
+		ThirdPersonFollowCam = 
+		{
+			bool Enabled = true,
+			CogPath FocusObjectCogPath = 
+			{
+				string Path = ":/Player/FocusObj",
+				bool ErrorOnResolveToNull = false,
+				bool ErrorOnPathCantCompute = false,
+				bool ErrorOnDirectLinkFail = false,
+				bool UpdateCogOnPathChange = true,
+				bool UpdatePathOnCogChange = true,
+				bool UpdateCogOnInitialize = true,
+				bool ResolvedNullErrorOccurred = false,
+				uint ResolvedCog = 4,
+				CogPathPreference PathPreference0 = CogRelative,
+				CogPathPreference PathPreference1 = SpaceRelative,
+				CogPathPreference PathPreference2 = Absolute,
+			},
+			Vec3 LocalOffsetFromFocusObj = [0, 1, -5],
+			float BaseTranslationSpeed = 1,
+			float BaseRotationSpeed = 180,
+			Vec3 WorldUp = [0, 1, 0],
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 5,
+		},
+		Named = 
+		{
+			string Name = "Ground",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [0, -1, 0],
+			Vec3 Scale = [100, 1, 100],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Model = 
+		{
+			bool Visible = true,
+			bool ViewCulling = true,
+			bool VisibilityEvents = true,
+			string Material = "5806b27758b136b6:Flat",
+			string Mesh = "4de0354322b345ae:Cube",
+		},
+		BoxCollider = 
+		{
+			bool Ghost = false,
+			bool SendsEvents = true,
+			string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+			string CollisionGroup = "4e740859314e5515:DefaultGroup",
+			Vec3 Offset = [0, 0, 0],
+			Vec3 HalfSize = [0.5, 0.5, 0.5],
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 6,
+		},
+		Named = 
+		{
+			string Name = "Player",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [1.91090155, -0.0554629564, 7.82230234],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
-    Camera = 
-    {
-      PerspectiveMode PerspectiveMode = Perspective,
-      Facing Facing = NegativeZ,
-      float FieldOfView = 45,
-      float NearPlane = 0.5,
-      float FarPlane = 100,
-      float Size = 20,
-    },
-    CameraViewport = 
-    {
-      bool RenderInEditor = false,
-      bool RenderInGame = true,
-      bool RenderToViewport = true,
-      uint RenderOrder = 0,
-      Vec2 Offset = [0, 0],
-      Vec2 Size = [1, 1],
-      CogPath Camera = 
-      {
-        string Path = ".",
-        bool ErrorOnResolveToNull = false,
-        bool ErrorOnPathCantCompute = false,
-        bool ErrorOnDirectLinkFail = false,
-        bool UpdateCogOnPathChange = true,
-        bool UpdatePathOnCogChange = true,
-        bool UpdateCogOnInitialize = true,
-        bool ResolvedNullErrorOccurred = false,
-        uint ResolvedCog = 3,
-        CogPathPreference PathPreference0 = CogRelative,
-        CogPathPreference PathPreference1 = SpaceRelative,
-        CogPathPreference PathPreference2 = Absolute,
-      },
-      Vec2 Resolution = [1280, 720],
-    },
-    DefaultRenderer = 
-    {
-      Vec4 ClearColor = [0, 0, 0, 1.0],
-      bool DrawDebug = false,
-    },
-		SoundListener = 
+		RigidBody = 
 		{
-			bool Active = true,
-			float Volume = 1,
+			Vec3 Velocity = [0, 0, 0],
+			Vec3 AngularVelocity = [0, 0, 0],
+			Enum DynamicState = Kinematic,
+			bool AllowSleep = true,
+			bool Asleep = false,
+			bool RotationLocked = true,
+			Enum Mode2D = InheritFromSpace,
+		},
+		CapsuleCollider = 
+		{
+			bool Ghost = false,
+			bool SendsEvents = true,
+			string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+			string CollisionGroup = "4e740859314e5515:DefaultGroup",
+			Vec3 Offset = [0, 0.75, 0],
+			float Radius = 0.400000006,
+			float Height = 0.75,
+			AxisDirection Direction = Y,
+			CapsuleScalingMode ScalingMode = PreserveHeight,
+		},
+		SweptController = 
+		{
+			Vec3 WorldUp = [0, 1, 0],
+			bool LockZAxis = false,
+			bool ForwardEvents = true,
+			float Gravity = 10,
+			float JumpSpeed = 5,
+			float JumpCancelFactor = 0.5,
+			float MaxMoveSpeed = 10,
+			float MaxFallSpeed = 50,
+			float GroundAcceleration = 50,
+			float AirAcceleration = 10,
+			float GroundDeceleration = 50,
+			float AirDeceleration = 10,
+			float MaxGroundSlope = 45,
+			float MaxCeilingSlope = 45,
+			float GroundSnapDistance = 0.100000001,
+			Vec3 ControllerVelocity = [0, 0, 0],
+			bool Grounded = true,
+			bool Jumping = false,
+			float GroundTraction = 1,
+			float AirTraction = 1,
+		},
+		Orientation = 
+		{
+			Vec3 GlobalUp = [0, 1, 0],
+			Vec3 UpVector = [0, 1, 0],
+			Vec3 ForwardVector = [0, 0, 1],
+			OrientationBases DefaultBases = ForwardZUpY,
+		},
+		InputInterpreter = 
+		{
+			Enum ForwardKey = W,
+			Enum BackwardKey = S,
+			Enum LeftKey = A,
+			Enum RightKey = D,
+			Vec2 MouseSensitivity = [1, 1],
+			float KeyboardRotSpeed = 3,
+			Enum JumpKey = Space,
+		},
+		OrientationHelper = 
+		{
+		},
+		CharMoveController = 
+		{
+			float OrientSpeed = 45,
+		},
+		Hierarchy = 
+		{
+			Cog ("5806b25a51c1fe65:BoxManModel") = 
+			{
+				Archetyped = 
+				{
+					string Name = "5806b25a51c1fe65:BoxManModel",
+					bool ModifiedFromArchetype = false,
+				},
+				LinkId = 
+				{
+					uint Id = 7,
+				},
+				Transform = 
+				{
+					Vec3 Translation = [0, 0, 0],
+				},
+			},
+			Cog = 
+			{
+				LinkId = 
+				{
+					uint Id = 4,
+				},
+				Named = 
+				{
+					string Name = "FocusObj",
+				},
+				Transform = 
+				{
+					Vec3 Translation = [0, 1.15786433, 0],
+					Vec3 Scale = [1, 1, 1],
+					Quat Rotation = [0, 0, 0, 1],
+				},
+			},
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 8,
+		},
+		Named = 
+		{
+			string Name = "Cube",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [1.58608782, 2.5, 9.5789938],
+			Vec3 Scale = [2.7585268, 2.11455059, 3.8412838],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+		Model = 
+		{
+			bool Visible = true,
+			bool ViewCulling = true,
+			bool VisibilityEvents = true,
+			string Material = "4de020863e85bb61:DefaultMaterial",
+			string Mesh = "4de0354322b345ae:Cube",
+		},
+		BoxCollider = 
+		{
+			bool Ghost = false,
+			bool SendsEvents = true,
+			string Material = "4de020863e872da8:DefaultPhysicsMaterial",
+			string CollisionGroup = "4e740859314e5515:DefaultGroup",
+			Vec3 Offset = [0, 0, 0],
+			Vec3 HalfSize = [0.5, 0.5, 0.5],
+		},
+		RigidBody = 
+		{
+			Vec3 Velocity = [0, -11.4617043, 0],
+			Vec3 AngularVelocity = [0, 0, 0],
+			Enum DynamicState = Kinematic,
+			bool AllowSleep = true,
+			bool Asleep = false,
+			bool RotationLocked = true,
+			Enum Mode2D = InheritFromSpace,
 		},
 	},
 },

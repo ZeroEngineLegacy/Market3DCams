@@ -1,0 +1,68 @@
+GeometryContent = 
+{
+	GeometryImport = 
+	{
+		Vec3 OriginOffset = [0, 0, 0],
+		float ScaleFactor = 1,
+		bool ChangeBasis = false,
+		BasisType XBasisTo = PositiveX,
+		BasisType YBasisTo = PositiveY,
+		BasisType ZBasisTo = PositiveZ,
+	},
+	MeshBuilder = 
+	{
+		bool GenerateSmoothNormals = false,
+		float SmoothingAngleDegreesThreshold = 30,
+		bool GenerateTangentSpace = false,
+		bool InvertUvYAxis = false,
+		bool FlipWindingOrder = false,
+		PhysicsImport PhysicsImport = NoMesh,
+		Array Meshes = 
+		[
+			{
+				string Name = "BoxManIdleBreathing.Stomach",
+				uint64 ResourceId = 5806b25a51aad22c,
+			},
+			{
+				string Name = "BoxManIdleBreathing.Chest",
+				uint64 ResourceId = 5806b25a51aad244,
+			},
+			{
+				string Name = "BoxManIdleBreathing.Head",
+				uint64 ResourceId = 5806b25a51aad248,
+			},
+			{
+				string Name = "BoxManIdleBreathing.LArm",
+				uint64 ResourceId = 5806b25a51aad24a,
+			},
+			{
+				string Name = "BoxManIdleBreathing.LArm01",
+				uint64 ResourceId = 5806b25a51aad24d,
+			},
+			{
+				string Name = "BoxManIdleBreathing.RArm",
+				uint64 ResourceId = 5806b25a51aad250,
+			},
+			{
+				string Name = "BoxManIdleBreathing.RArm01",
+				uint64 ResourceId = 5806b25a51aad252,
+			},
+			{
+				string Name = "BoxManIdleBreathing.LLeg",
+				uint64 ResourceId = 5806b25a51aad255,
+			},
+			{
+				string Name = "BoxManIdleBreathing.LLeg01",
+				uint64 ResourceId = 5806b25a51aad258,
+			},
+			{
+				string Name = "BoxManIdleBreathing.RLeg",
+				uint64 ResourceId = 5806b25a51aad25b,
+			},
+			{
+				string Name = "BoxManIdleBreathing.RLeg01",
+				uint64 ResourceId = 5806b25a51aad25e,
+			},
+		],
+	},
+},

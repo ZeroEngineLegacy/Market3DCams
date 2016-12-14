@@ -1,0 +1,68 @@
+GeometryContent = 
+{
+	GeometryImport = 
+	{
+		Vec3 OriginOffset = [0, 0, 0],
+		float ScaleFactor = 1,
+		bool ChangeBasis = false,
+		BasisType XBasisTo = PositiveX,
+		BasisType YBasisTo = PositiveY,
+		BasisType ZBasisTo = PositiveZ,
+	},
+	MeshBuilder = 
+	{
+		bool GenerateSmoothNormals = false,
+		float SmoothingAngleDegreesThreshold = 30,
+		bool GenerateTangentSpace = false,
+		bool InvertUvYAxis = false,
+		bool FlipWindingOrder = false,
+		PhysicsImport PhysicsImport = NoMesh,
+		Array Meshes = 
+		[
+			{
+				string Name = "BoxMan.Stomach",
+				uint64 ResourceId = 5806b25a51d06f8b,
+			},
+			{
+				string Name = "BoxMan.Chest",
+				uint64 ResourceId = 5806b25a51d06fa4,
+			},
+			{
+				string Name = "BoxMan.Head",
+				uint64 ResourceId = 5806b25a51d06fa8,
+			},
+			{
+				string Name = "BoxMan.LArm",
+				uint64 ResourceId = 5806b25a51d06fab,
+			},
+			{
+				string Name = "BoxMan.LArm01",
+				uint64 ResourceId = 5806b25a51d06fae,
+			},
+			{
+				string Name = "BoxMan.RArm",
+				uint64 ResourceId = 5806b25a51d06fb1,
+			},
+			{
+				string Name = "BoxMan.RArm01",
+				uint64 ResourceId = 5806b25a51d06fb3,
+			},
+			{
+				string Name = "BoxMan.LLeg",
+				uint64 ResourceId = 5806b25a51d06fb6,
+			},
+			{
+				string Name = "BoxMan.LLeg01",
+				uint64 ResourceId = 5806b25a51d06fb9,
+			},
+			{
+				string Name = "BoxMan.RLeg",
+				uint64 ResourceId = 5806b25a51d06fbc,
+			},
+			{
+				string Name = "BoxMan.RLeg01",
+				uint64 ResourceId = 5806b25a51d06fbf,
+			},
+		],
+	},
+},

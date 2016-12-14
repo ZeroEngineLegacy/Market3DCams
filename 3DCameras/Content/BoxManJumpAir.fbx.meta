@@ -1,0 +1,68 @@
+GeometryContent = 
+{
+	GeometryImport = 
+	{
+		Vec3 OriginOffset = [0, 0, 0],
+		float ScaleFactor = 1,
+		bool ChangeBasis = false,
+		BasisType XBasisTo = PositiveX,
+		BasisType YBasisTo = PositiveY,
+		BasisType ZBasisTo = PositiveZ,
+	},
+	MeshBuilder = 
+	{
+		bool GenerateSmoothNormals = false,
+		float SmoothingAngleDegreesThreshold = 30,
+		bool GenerateTangentSpace = false,
+		bool InvertUvYAxis = false,
+		bool FlipWindingOrder = false,
+		PhysicsImport PhysicsImport = NoMesh,
+		Array Meshes = 
+		[
+			{
+				string Name = "BoxManJumpAir.Stomach",
+				uint64 ResourceId = 5806b25a51af6f90,
+			},
+			{
+				string Name = "BoxManJumpAir.Chest",
+				uint64 ResourceId = 5806b25a51af6fac,
+			},
+			{
+				string Name = "BoxManJumpAir.Head",
+				uint64 ResourceId = 5806b25a51af6fb0,
+			},
+			{
+				string Name = "BoxManJumpAir.LArm",
+				uint64 ResourceId = 5806b25a51af6fb3,
+			},
+			{
+				string Name = "BoxManJumpAir.LArm01",
+				uint64 ResourceId = 5806b25a51af6fb6,
+			},
+			{
+				string Name = "BoxManJumpAir.RArm",
+				uint64 ResourceId = 5806b25a51af6fba,
+			},
+			{
+				string Name = "BoxManJumpAir.RArm01",
+				uint64 ResourceId = 5806b25a51af6fbe,
+			},
+			{
+				string Name = "BoxManJumpAir.LLeg",
+				uint64 ResourceId = 5806b25a51af6fc1,
+			},
+			{
+				string Name = "BoxManJumpAir.LLeg01",
+				uint64 ResourceId = 5806b25a51af6fc4,
+			},
+			{
+				string Name = "BoxManJumpAir.RLeg",
+				uint64 ResourceId = 5806b25a51af6fc7,
+			},
+			{
+				string Name = "BoxManJumpAir.RLeg01",
+				uint64 ResourceId = 5806b25a51af6fca,
+			},
+		],
+	},
+},

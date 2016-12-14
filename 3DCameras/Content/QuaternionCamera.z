@@ -35,8 +35,10 @@ class QuaternionCamera : ZilchComponent
     
     // The up/down delta from mouse move.
     var UpDelta : Real = 0.0;
+    
     // the left/right delta from mouse move.
     var SideDelta : Real = 0.0;
+    
     // The total accumulation of the up/down angle (see spherical coordinates for the definition fo phi).
     // Used to prevent wrapping around at the poles.
     var Phi : Real = 0.0;
@@ -48,7 +50,7 @@ class QuaternionCamera : ZilchComponent
     function Initialize(initializer : CogInitializer)
     {
         // Get the viewport so we can listen to mouse events
-        var viewport = this.Camera.Viewport;
+        var viewport = this.Owner.CameraViewport;
         
         Zero.Connect(viewport, Events.RightMouseDown, this.OnRightMouseDown);
         Zero.Connect(viewport, Events.RightMouseUp, this.OnRightMouseUp);
@@ -92,11 +94,6 @@ class QuaternionCamera : ZilchComponent
     }
     
     function OnMouseMove(viewportMouseEvent : MouseEvent)
-    {
-        this.CameraMouseMove(viewportMouseEvent);
-    }
-    
-    function CameraMouseMove(viewportMouseEvent : MouseEvent)
     {
         // If the mouse was ready (aka we're tracking mouse movement)
         // then update the mouse deltas

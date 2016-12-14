@@ -1,0 +1,100 @@
+class ThirdPersonFollowCam : ZilchComponent
+{
+    [Dependency]
+    var Transform : Transform;
+    
+    [Dependency]
+    var Orientation : Orientation;
+    
+    [Dependency]
+    var Camera : Camera;
+    
+    [Dependency]
+    var Collider : Collider;
+    
+    //Should this component operate
+    [Property]
+    var Enabled : Boolean = true;
+    
+    //Is this component currently operating
+    var Active : Boolean = false;
+    
+    [Property]
+    var FocusObjectCogPath : CogPath;
+    var FocusObject : Cog
+    {
+        get { return this.FocusObjectCogPath.Cog; } 
+    }
+    
+    var FocusPos : Real3
+    {
+        get { return this.FocusObject.Transform.WorldTranslation; } 
+    }
+    
+    [Property]
+    var LocalOffsetFromFocusObj : Real3 = Real3(0, 3, 5);
+    
+    var TargetWorldTranslation : Real3
+    {
+        get { return this.FocusObject.Transform.TransformPoint(this.LocalOffsetFromFocusObj); }
+    }
+    
+    var TargetWorldRotation : Quaternion
+    {
+        get { return this.Orientation.GetLookAtPointWithUpRotation(this.FocusPos, this.WorldUp); }
+    }
+    
+    [Property]
+    var BaseTranslationSpeed : Real = 5.0;
+    
+    [Property]
+    var BaseRotationSpeed : Real = 30.0;
+    var BaseRotationSpeedRadians : Real
+    {
+        get { return Math.ToRadians(this.BaseRotationSpeed); }
+    }
+    
+    [Property]
+    var WorldUp : Real3 = Real3(0,1,0);
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+
+    function OnLogicUpdate(event : UpdateEvent)
+    {
+        var targetWorldTranslation = this.TargetWorldTranslation;
+        Console.WriteLine("Before: `targetWorldTranslation`");
+        foreach(var contact in this.Collider.Contacts)
+        {
+            Console.WriteLine(contact.OtherObject);
+            foreach(var point in contact.ContactPoints)
+            {
+                var surfaceNormal = -point.WorldNormalTowardsOther;
+                var dif = surfaceNormal * point.Penetration;
+                targetWorldTranslation += dif;
+                
+                Console.WriteLine(dif);
+                
+                
+                
+                
+                var sphere = DebugSphere();
+                sphere.Position = point.WorldPoint;
+                sphere.Radius = 0.5;
+                //sphere.ViewAligned = true;
+                sphere.OnTop = true;
+                sphere.Color = Real4(1,0,1,1);
+                sphere.Colored = true;
+            }
+        }
+        Console.WriteLine("After: `targetWorldTranslation`");
+        
+        var newPos = Math.Lerp(this.Transform.Translation, targetWorldTranslation, this.BaseTranslationSpeed * event.Dt);
+        this.Transform.Translation = newPos;
+        
+        var newRot = Math.Slerp(this.Transform.Rotation, this.TargetWorldRotation, this.BaseRotationSpeedRadians * event.Dt);
+        this.Transform.Rotation = newRot;
+    }
+}
