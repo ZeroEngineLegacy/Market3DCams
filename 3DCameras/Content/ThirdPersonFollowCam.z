@@ -77,131 +77,115 @@ class ThirdPersonFollowCam : ZilchComponent
     [Property]
     var BackPadding : Real = 1.0;
     
+    var ObstacleFilter : CastFilter = CastFilter();
+    
+    [Property]
+    var CameraCollisionGroup : CollisionGroup;
+    
     function Initialize(init : CogInitializer)
     {
+        this.ObstacleFilter.CollisionGroup = this.CameraCollisionGroup;
+        this.ObstacleFilter.IgnoreChildren = true;
+        this.ObstacleFilter.IgnoreDynamic = true;
         Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
     }
 
     function OnLogicUpdate(event : UpdateEvent)
     {
-        var targetWorldTranslation = this.TargetWorldTranslation;
-        var newIntendedPos = Math.Lerp(this.Transform.Translation, targetWorldTranslation, this.BaseTranslationSpeed * event.Dt);
+        var curPos = this.Transform.WorldTranslation;
+        var newIntendedPos = this.TargetWorldTranslation;
         
-        //var rayFromFocus = Ray();
-        //rayFromFocus.Start = this.FocusPos;
-        //rayFromFocus.Direction = Math.Normalize(newIntendedPos - this.FocusPos);
-        //var rayFromFocusResult = this.Space.PhysicsSpace.CastRayFirst(rayFromFocus);
-        //
-        //if(rayFromFocusResult.ObjectHit != null)
-        //{
-        //    var hitPos = rayFromFocusResult.WorldPosition;
-        //    
-        //}
+        var rayFromFocus = Ray();
+        rayFromFocus.Start = this.FocusPos;
+        rayFromFocus.Direction = Math.Normalize(newIntendedPos - this.FocusPos);
+        var rayFromFocusResult = this.Space.PhysicsSpace.CastRayFirstFiltered(rayFromFocus, this.ObstacleFilter);
         
         //Construct vectors that will shoot out forward  of the camera for prediction
         var fuRay = Ray();
-        fuRay.Start = newIntendedPos;
+        fuRay.Start = curPos;
         var dir = this.Orientation.WorldForward;
         fuRay.Direction = Math.RotateVector(dir, this.Orientation.WorldRight, this.ForwardSensorAngleRad);
-        var fuResult = this.Space.PhysicsSpace.CastRayFirst(fuRay);
+        var fuResult = this.Space.PhysicsSpace.CastRayFirstFiltered(fuRay, this.ObstacleFilter);
         this.DrawRay(fuRay, fuResult.Distance);
-        
-        //var fdRay = Ray();
-        //fdRay.Start = newIntendedPos;
-        //fdRay.Direction = Math.RotateVector(this.Orientation.WorldForward, this.Orientation.WorldRight, -this.ForwardSensorAngleRad);
-        //var fdResult = this.Space.PhysicsSpace.CastRayFirst(fdRay);
-        //this.DrawRay(fdRay, fdResult.Distance);
         
         
         if(fuResult.ObjectHit != null  && fuResult.Distance < this.MinInfluenceDist)
         {
             var yDif = fuResult.WorldPosition.Y - this.Transform.WorldTranslation.Y;
-            var dif = -yDif * (this.ForwardSensorInfluence/fuResult.Distance) * event.Dt;
-            //Console.WriteLine("fuResult.Distance: `fuResult.Distance`");
-            //Console.WriteLine("dif: `dif`");
+            var dif = -yDif * (this.ForwardSensorInfluence/fuResult.Distance);
             newIntendedPos += Real3(0, dif, 0);
         }
-        //if(fdResult.ObjectHit != null && fuResult.Distance > fdResult.Distance && fdResult.Distance < this.MinInfluenceDist)
-        //{
-        //    var yDif = fdResult.WorldPosition.Y - this.Transform.WorldTranslation.Y;
-        //    Console.WriteLine("fdResult.Distance: `fdResult.Distance`");
-        //    newIntendedPos += Real3(0, -yDif * this.ForwardSensorInfluence * event.Dt, 0);
-        //}
         
-        var brRay = Ray();
-        brRay.Start = this.Owner.Transform.WorldTranslation;
-        brRay.Direction = Math.RotateVector(-this.Orientation.WorldForward, this.Orientation.WorldUp, -this.ForwardSensorAngleRad);
-        var brResult = this.Space.PhysicsSpace.CastRayFirst(brRay);
-        this.DrawRay(brRay, brResult.Distance);
+        else if(rayFromFocusResult.ObjectHit != null  && fuResult.Distance < this.MinInfluenceDist)
+        {
+            Console.WriteLine(rayFromFocusResult.ObjectHit);
+            var hitPos = rayFromFocusResult.WorldPosition;
+            var curDif = Math.Distance(newIntendedPos, this.FocusPos);
+            var tdir = Math.Normalize(newIntendedPos - this.FocusPos);
+            newIntendedPos = this.FocusPos + ((rayFromFocusResult.Distance - this.BackPadding) * tdir);
+        }
         
-        var blRay = Ray();
-        blRay.Start = this.Owner.Transform.WorldTranslation;
-        blRay.Direction = Math.RotateVector(-this.Orientation.WorldForward, this.Orientation.WorldUp, this.ForwardSensorAngleRad);
-        var blResult = this.Space.PhysicsSpace.CastRayFirst(blRay);
-        this.DrawRay(blRay, blResult.Distance);
+        var bRay = Ray();
+        bRay.Start = curPos;
+        bRay.Direction = -this.Orientation.WorldForward;
+        var bResult = this.Space.PhysicsSpace.CastRayFirstFiltered(bRay, this.ObstacleFilter);
+        this.DrawRay(bRay, bResult.Distance);
         
         //Console.WriteLine(blResult.Distance < this.BackPadding);
-        if(brResult.ObjectHit != null && brResult.Distance < this.BackPadding && (brResult.Distance > blResult.Distance || blResult.ObjectHit == null))
+        if(bResult.ObjectHit != null && bResult.Distance < this.BackPadding && Math.Length(this.LocalOffsetFromFocusObj) > Math.Distance(this.FocusPos, bResult.WorldPosition))
         {
-            var dif = Math.Abs(this.BackPadding - brResult.Distance);
-            var curDif = Math.Distance(newIntendedPos, this.FocusPos);
-            var tdir = Math.Normalize(newIntendedPos - this.FocusPos);
-            newIntendedPos = this.FocusPos + ((curDif - dif) * tdir);
+            var camDistDif = this.BackPadding - (bResult.Distance * 1.1);
+            var focusDif = curPos - this.FocusPos;
+            
+            newIntendedPos = this.FocusPos + (Math.Normalize(focusDif) * (Math.Length(focusDif) - camDistDif));
         }
         
-        else if(blResult.ObjectHit != null && blResult.Distance < this.BackPadding && (brResult.Distance< blResult.Distance || brResult.ObjectHit == null))
+        
+        //Axis aligned rays
+        var uRay = Ray();
+        uRay.Start = newIntendedPos;
+        uRay.Direction = this.Orientation.LocalUp;
+        var uResult = this.Space.PhysicsSpace.CastRayFirstFiltered(uRay, this.ObstacleFilter);
+        this.DrawRay(uRay, uResult.Distance);
+        
+        var dRay = Ray();
+        dRay.Start = newIntendedPos;
+        dRay.Direction = -this.Orientation.LocalUp;
+        var dResult = this.Space.PhysicsSpace.CastRayFirstFiltered(dRay, this.ObstacleFilter);
+        
+        var rRay = Ray();
+        rRay.Start = newIntendedPos;
+        rRay.Direction = this.Orientation.LocalRight;
+        var rResult = this.Space.PhysicsSpace.CastRayFirstFiltered(rRay, this.ObstacleFilter);
+        
+        var lRay = Ray();
+        lRay.Start = this.Owner.Transform.WorldTranslation;
+        lRay.Direction = -this.Orientation.LocalRight;
+        var lResult = this.Space.PhysicsSpace.CastRayFirstFiltered(lRay, this.ObstacleFilter);
+        
+        //USe Axis aligned casts for padding checks
+        if(uResult.ObjectHit != null && uResult.Distance < this.PaddingRadius)
         {
-            var dif = Math.Abs(this.BackPadding - blResult.Distance);
-            var curDif = Math.Distance(newIntendedPos, this.FocusPos);
-            var tdir = Math.Normalize(newIntendedPos - this.FocusPos);
-            newIntendedPos = this.FocusPos + ((curDif - dif) * tdir);
+            var dif = this.PaddingRadius - uResult.Distance;
+            newIntendedPos += -uRay.Direction * dif;
+        }
+        if(dResult.ObjectHit != null && dResult.Distance < this.PaddingRadius)
+        {
+            var dif = this.PaddingRadius - dResult.Distance;
+            newIntendedPos += -dRay.Direction * dif;
+        }
+        if(rResult.ObjectHit != null && rResult.Distance < this.PaddingRadius)
+        {
+            var dif = this.PaddingRadius - rResult.Distance;
+            newIntendedPos += -rRay.Direction * dif;
+        }
+        if(lResult.ObjectHit != null && lResult.Distance < this.PaddingRadius)
+        {
+            var dif = this.PaddingRadius - lResult.Distance;
+            newIntendedPos += -lRay.Direction * dif;
         }
         
-        ////Axis aligned rays
-        //var uRay = Ray();
-        //uRay.Start = newIntendedPos;
-        //uRay.Direction = this.Orientation.LocalUp;
-        //var uResult = this.Space.PhysicsSpace.CastRayFirst(uRay);
-        //this.DrawRay(uRay, uResult.Distance);
-        //
-        //var dRay = Ray();
-        //dRay.Start = newIntendedPos;
-        //dRay.Direction = -this.Orientation.LocalUp;
-        //var dResult = this.Space.PhysicsSpace.CastRayFirst(dRay);
-        //
-        //var rRay = Ray();
-        //rRay.Start = newIntendedPos;
-        //rRay.Direction = this.Orientation.LocalRight;
-        //var rResult = this.Space.PhysicsSpace.CastRayFirst(rRay);
-        //
-        //var lRay = Ray();
-        //lRay.Start = this.Owner.Transform.WorldTranslation;
-        //lRay.Direction = -this.Orientation.LocalRight;
-        //var lResult = this.Space.PhysicsSpace.CastRayFirst(lRay);
-        //
-        ////USe Axis aligned casts for padding checks
-        //if(uResult.ObjectHit != null && uResult.Distance < this.PaddingRadius)
-        //{
-        //    var dif = this.PaddingRadius - uResult.Distance;
-        //    newIntendedPos += -uRay.Direction * dif;
-        //}
-        //if(dResult.ObjectHit != null && dResult.Distance < this.PaddingRadius)
-        //{
-        //    var dif = this.PaddingRadius - dResult.Distance;
-        //    newIntendedPos += -dRay.Direction * dif;
-        //}
-        //if(rResult.ObjectHit != null && rResult.Distance < this.PaddingRadius)
-        //{
-        //    var dif = this.PaddingRadius - rResult.Distance;
-        //    newIntendedPos += -rRay.Direction * dif;
-        //}
-        //if(lResult.ObjectHit != null && lResult.Distance < this.PaddingRadius)
-        //{
-        //    var dif = this.PaddingRadius - lResult.Distance;
-        //    newIntendedPos += -lRay.Direction * dif;
-        //}
-        
-        var newPos = newIntendedPos;
+        var newPos = Math.Lerp(this.Transform.WorldTranslation, newIntendedPos, this.BaseTranslationSpeed * event.Dt);
         this.Transform.Translation = newPos;
         
         var newRot = Math.Slerp(this.Transform.Rotation, this.TargetWorldRotation, this.BaseRotationSpeedRadians * event.Dt);

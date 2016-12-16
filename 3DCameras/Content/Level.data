@@ -53,9 +53,9 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-12.9578867, 5.41029072, 0.61114502],
+			Vec3 Translation = [-17.5155697, 10.8123646, 14.9790344],
 			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [-0.0654931143, -0.839333773, -0.103800319, 0.529580057],
+			Quat Rotation = [-0.152834952, -0.535520554, -0.0992525592, 0.824626148],
 		},
 		Camera = 
 		{
@@ -118,9 +118,9 @@ Level =
 		{
 			ControlMode ControlMode = Orbit,
 			float LookDistance = 13.0616589,
-			float VerticalAngle = 0.246090308,
-			float HorizontalAngle = 2.01585531,
-			Vec3 LookTarget = [-1.52380979, 2.22828841, 6.0649209],
+			float VerticalAngle = 0.366517991,
+			float HorizontalAngle = 7.43510628,
+			Vec3 LookTarget = [-6.37567472, 6.13149929, 10.0192814],
 			float MoveSensitivity = 1,
 		},
 	},
@@ -232,16 +232,17 @@ Level =
 				CogPathPreference PathPreference1 = SpaceRelative,
 				CogPathPreference PathPreference2 = Absolute,
 			},
-			Vec3 LocalOffsetFromFocusObj = [0, 1, -5],
-			float BaseTranslationSpeed = 2,
+			Vec3 LocalOffsetFromFocusObj = [0, 1, -7],
+			float BaseTranslationSpeed = 3,
 			float BaseRotationSpeed = 240,
 			Vec3 WorldUp = [0, 1, 0],
-			float ForwardSensorAngle = 30,
+			float ForwardSensorAngle = 45,
 			float BackwardSensorAngle = 15,
 			float MinInfluenceDist = 2,
-			float ForwardSensorInfluence = 4,
+			float ForwardSensorInfluence = 1,
 			float PaddingRadius = 0.5,
 			float BackPadding = 0.5,
+			string CameraCollisionGroup = "5802f2483b80d77c:Camera",
 		},
 		OrientationHelper = 
 		{
@@ -293,13 +294,13 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [0, -0.0554629564, 7.82230234],
+			Vec3 Translation = [-8.71521282, -0.0554629564, 7.82230234],
 			Vec3 Scale = [1, 1, 1],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		RigidBody = 
 		{
-			Vec3 Velocity = [0, 0, 0],
+			Vec3 Velocity = [-544.700745, 0, 0],
 			Vec3 AngularVelocity = [0, 0, 0],
 			Enum DynamicState = Kinematic,
 			bool AllowSleep = true,
@@ -312,7 +313,7 @@ Level =
 			bool Ghost = false,
 			bool SendsEvents = true,
 			string Material = "4de020863e872da8:DefaultPhysicsMaterial",
-			string CollisionGroup = "4e740859314e5515:DefaultGroup",
+			string CollisionGroup = "5802f1fc2b359b35:Player",
 			Vec3 Offset = [0, 0.75, 0],
 			float Radius = 0.400000006,
 			float Height = 0.75,
@@ -411,11 +412,11 @@ Level =
 		},
 		Named = 
 		{
-			string Name = "Cube",
+			string Name = "Floater",
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-11.6420269, 2.5, 9.5789938],
+			Vec3 Translation = [-0.612976074, 2.5, 14.6214514],
 			Vec3 Scale = [2.7585268, 2.11455059, 3.8412838],
 			Quat Rotation = [0, 0, 0, 1],
 		},
@@ -438,7 +439,7 @@ Level =
 		},
 		RigidBody = 
 		{
-			Vec3 Velocity = [-727.626648, 0, 0],
+			Vec3 Velocity = [-38.3110008, 0, 315.153564],
 			Vec3 AngularVelocity = [0, 0, 0],
 			Enum DynamicState = Kinematic,
 			bool AllowSleep = true,
@@ -460,7 +461,7 @@ Level =
 		Transform = 
 		{
 			Vec3 Translation = [13.0037441, 2.5, 9.5789938],
-			Vec3 Scale = [2.7585268, 9.27420616, 14.4756165],
+			Vec3 Scale = [0.606409848, 9.27420616, 14.4756165],
 			Quat Rotation = [0, 0, 0, 1],
 		},
 		Model = 
