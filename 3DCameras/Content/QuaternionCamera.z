@@ -131,21 +131,13 @@ class QuaternionCamera : ZilchComponent
         
         // Record keyboard movement to pan the camera
         if(Zero.Keyboard.KeyIsDown(Keys.A))
-        {
             movement.X -= 1.0;
-        }
         if(Zero.Keyboard.KeyIsDown(Keys.D))
-        {
             movement.X += 1.0;
-        }
         if(Zero.Keyboard.KeyIsDown(Keys.W))
-        {
             movement.Z -= 1.0;
-        }
         if(Zero.Keyboard.KeyIsDown(Keys.S))
-        {
             movement.Z += 1.0;
-        }
         
         // We computed the direction in local space, bring it to the camera's world space
         var current = this.Owner.Transform.Translation;
@@ -154,13 +146,9 @@ class QuaternionCamera : ZilchComponent
         // Add panning along the y-axis because it is nice.
         // Do this after the transform normal because we want the world up, not local up
         if(Zero.Keyboard.KeyIsDown(Keys.Q))
-        {
             movement.Y -= 1.0;
-        }
         if(Zero.Keyboard.KeyIsDown(Keys.E))
-        {
-            movement.Y += 1.0;
-        }
+            movement.Y += 1.0; 
         
         // Update the translation
         var speed = updateEvent.Dt * this.Speed;

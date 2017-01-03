@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "ArcBallCamera",
+		uint64 ResourceId = 583d368f6f62c72a,
+	},
+},

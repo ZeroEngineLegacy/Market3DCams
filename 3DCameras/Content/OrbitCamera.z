@@ -1,9 +1,14 @@
-//Copyright: © 2016 DigiPen, All Rights Reserved.
-//Author:    Arend Danielek
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 12/13/2016                                                                                  */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Arend Danielek                                                                          */
+/* Class: ViewportConfiguration                                                                             */
+/* Brief: A camera that orbits around a focal point. Rotates with right mouse or on left mouse when 'q' is  */
+/* held. Pans with left mouse when 'e' is held. zooms in and out towards the focal point with the scroll    */
+/* wheel.                                                                                                   */
+/************************************************************************************************************/
 
-// A camera that orbits around a focal point. Rotates with right mouse or on
-// left mouse when 'q' is held. Pans with left mouse when 'e' is held. zooms
-// in and out towards the focal point with the scroll wheel.
 class OrbitCamera : ZilchComponent
 {
     [Property]
@@ -86,21 +91,14 @@ class OrbitCamera : ZilchComponent
         
         // Move the target point along the camera's forward and right projected onto the camera's x-z plane 
         if(Zero.Keyboard.KeyIsDown(Keys.W))
-        {
             movementW += movementForward;
-        }
         else if(Zero.Keyboard.KeyIsDown(Keys.S))
-        {
             movementW -= movementForward;
-        }
         if(Zero.Keyboard.KeyIsDown(Keys.A))
-        {
             movementW -= movementRight;
-        }
         else if(Zero.Keyboard.KeyIsDown(Keys.D))
-        {
             movementW += movementRight;
-        }
+        
         // Scale the movement by sensitivity
         movementW = movementW * this.PanSensitivity;
         

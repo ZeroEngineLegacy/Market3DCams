@@ -1,13 +1,12 @@
-/********************************************************/
-/* Copyright 2016 DigiPen, All Rights Reserved          */
-/* Last Update: 12/13/2016                              */
-/* Author: Zero Engine Team                             */
-/* Last updated by: Arend Danielek                      */
-/********************************************************/
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/3/2016                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Arend Danielek                                                                          */
+/* Class: ContactDebugDraw                                                                                  */
+/* Brief: A simple helper class that iterates through all contacts with a collider and debug draws them.    */
+/************************************************************************************************************/
 
-
-//A simple helper class that iterates through all contacts
-//with a collider and debug draws them.
 class ContactDebugDraw : ZilchComponent
 {
     // We depend on having a collider (in order to have collision to draw)

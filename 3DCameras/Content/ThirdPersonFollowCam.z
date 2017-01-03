@@ -1,3 +1,13 @@
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 12/13/2016                                                                                  */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Arend Danielek                                                                          */
+/* Class: ThirdPersonFollowCam                                                                              */
+/* Brief: Implements a 3D camera which attempts to independently follow and object in third person with out */
+/* clipping through geometry.                                                                               */
+/************************************************************************************************************/
+
 class ThirdPersonFollowCam : ZilchComponent
 {
     [Dependency]
@@ -11,13 +21,6 @@ class ThirdPersonFollowCam : ZilchComponent
     
     [Dependency]
     var RigidBody : RigidBody;
-    
-    //Should this component operate
-    [Property]
-    var Enabled : Boolean = true;
-    
-    //Is this component currently operating
-    var Active : Boolean = false;
     
     [Property]
     var FocusObjectCogPath : CogPath;
@@ -82,6 +85,9 @@ class ThirdPersonFollowCam : ZilchComponent
     [Property]
     var CameraCollisionGroup : CollisionGroup;
     
+    [Property]
+    var DrawDebugRays : Boolean = true;
+    
     function Initialize(init : CogInitializer)
     {
         this.ObstacleFilter.CollisionGroup = this.CameraCollisionGroup;
@@ -92,23 +98,23 @@ class ThirdPersonFollowCam : ZilchComponent
 
     function OnLogicUpdate(event : UpdateEvent)
     {
+        //Store the camera's current and target positions locally so they can be modified.
         var curPos = this.Transform.WorldTranslation;
         var newIntendedPos = this.TargetWorldTranslation;
         
-        var rayFromFocus = Ray();
-        rayFromFocus.Start = this.FocusPos;
-        rayFromFocus.Direction = Math.Normalize(newIntendedPos - this.FocusPos);
-        var rayFromFocusResult = this.Space.PhysicsSpace.CastRayFirstFiltered(rayFromFocus, this.ObstacleFilter);
-        
-        //Construct vectors that will shoot out forward  of the camera for prediction
+        //Construct vector that will shoot out forward and above of the camera for prediction
+        //of surfaces which the camera must interpolate under
         var fuRay = Ray();
         fuRay.Start = curPos;
-        var dir = this.Orientation.WorldForward;
-        fuRay.Direction = Math.RotateVector(dir, this.Orientation.WorldRight, this.ForwardSensorAngleRad);
+        var fuDir = this.Orientation.WorldForward;
+        fuRay.Direction = Math.RotateVector(fuDir, this.Orientation.WorldRight, this.ForwardSensorAngleRad);
         var fuResult = this.Space.PhysicsSpace.CastRayFirstFiltered(fuRay, this.ObstacleFilter);
-        this.DrawRay(fuRay, fuResult.Distance);
         
+        if(this.DrawDebugRays)
+            this.DrawRay(fuRay, fuResult.Distance);
         
+        //If the forward-up ray senses and object within MinInfluenceDist then the Y-Axis
+        //difference should be used to influence how much the camera is pushed down to go under the object
         if(fuResult.ObjectHit != null  && fuResult.Distance < this.MinInfluenceDist)
         {
             var yDif = fuResult.WorldPosition.Y - this.Transform.WorldTranslation.Y;
@@ -116,23 +122,47 @@ class ThirdPersonFollowCam : ZilchComponent
             newIntendedPos += Real3(0, dif, 0);
         }
         
-        else if(rayFromFocusResult.ObjectHit != null  && fuResult.Distance < this.MinInfluenceDist)
-        {
-            Console.WriteLine(rayFromFocusResult.ObjectHit);
-            var hitPos = rayFromFocusResult.WorldPosition;
-            var curDif = Math.Distance(newIntendedPos, this.FocusPos);
-            var tdir = Math.Normalize(newIntendedPos - this.FocusPos);
-            newIntendedPos = this.FocusPos + ((rayFromFocusResult.Distance - this.BackPadding) * tdir);
-        }
-        
+        //Cast a ray backwards from the camera
         var bRay = Ray();
         bRay.Start = curPos;
         bRay.Direction = -this.Orientation.WorldForward;
         var bResult = this.Space.PhysicsSpace.CastRayFirstFiltered(bRay, this.ObstacleFilter);
-        this.DrawRay(bRay, bResult.Distance);
         
-        //Console.WriteLine(blResult.Distance < this.BackPadding);
-        if(bResult.ObjectHit != null && bResult.Distance < this.BackPadding && Math.Length(this.LocalOffsetFromFocusObj) > Math.Distance(this.FocusPos, bResult.WorldPosition))
+        if(this.DrawDebugRays)
+            this.DrawRay(bRay, bResult.Distance);
+        
+        //Cast a ray backwards and above the camera
+        var buRay = Ray();
+        buRay.Start = curPos;
+        var buDir = -this.Orientation.WorldForward;
+        buRay.Direction = Math.RotateVector(buDir, this.Orientation.WorldRight, -this.BackwardSensorAngleRad);
+        var buResult = this.Space.PhysicsSpace.CastRayFirstFiltered(buRay, this.ObstacleFilter);
+        
+        if(this.DrawDebugRays)
+            this.DrawRay(buRay, buResult.Distance);
+        
+        //Cast a ray back from the focus object's position
+        var buCheckRay = Ray();
+        buCheckRay.Start = this.FocusPos;
+        buCheckRay.Direction = -this.FocusObject.Orientation.WorldForward;
+        var buCheckResult = this.Space.PhysicsSpace.CastRayFirstFiltered(buCheckRay, this.ObstacleFilter);
+        
+        //If there is an object above and behind the camera within MinInfluenceDist and
+        //the object does not extend to the ground then move the camera down under the object
+        //as the player moves backards under the object.
+        if(buResult.ObjectHit != null &&
+           buResult.ObjectHit != buCheckResult.ObjectHit &&
+           buResult.Distance < this.MinInfluenceDist)
+        {
+            var yDif = buResult.WorldPosition.Y - this.Transform.WorldTranslation.Y;
+            var dif = -yDif * (this.ForwardSensorInfluence/buResult.Distance);
+            newIntendedPos += Real3(0, dif, 0);
+        }
+        //If there is an object behind the camera that can not be spatially avoided and would 
+        //clip the camera zoom the camera in to avoid clipping into the object
+        else if(bResult.ObjectHit != null &&
+                bResult.Distance < this.BackPadding &&
+                Math.Length(this.LocalOffsetFromFocusObj) > Math.Distance(this.FocusPos, bResult.WorldPosition))
         {
             var camDistDif = this.BackPadding - (bResult.Distance * 1.1);
             var focusDif = curPos - this.FocusPos;
@@ -140,30 +170,29 @@ class ThirdPersonFollowCam : ZilchComponent
             newIntendedPos = this.FocusPos + (Math.Normalize(focusDif) * (Math.Length(focusDif) - camDistDif));
         }
         
-        
-        //Axis aligned rays
+        //Local axis aligned rays to act as oriented close range buffer orthoganal to the zoom axis
         var uRay = Ray();
-        uRay.Start = newIntendedPos;
+        uRay.Start = curPos;
         uRay.Direction = this.Orientation.LocalUp;
         var uResult = this.Space.PhysicsSpace.CastRayFirstFiltered(uRay, this.ObstacleFilter);
-        this.DrawRay(uRay, uResult.Distance);
         
         var dRay = Ray();
-        dRay.Start = newIntendedPos;
+        dRay.Start = curPos;
         dRay.Direction = -this.Orientation.LocalUp;
         var dResult = this.Space.PhysicsSpace.CastRayFirstFiltered(dRay, this.ObstacleFilter);
         
         var rRay = Ray();
-        rRay.Start = newIntendedPos;
+        rRay.Start = curPos;
         rRay.Direction = this.Orientation.LocalRight;
         var rResult = this.Space.PhysicsSpace.CastRayFirstFiltered(rRay, this.ObstacleFilter);
         
         var lRay = Ray();
-        lRay.Start = this.Owner.Transform.WorldTranslation;
+        lRay.Start = curPos;
         lRay.Direction = -this.Orientation.LocalRight;
         var lResult = this.Space.PhysicsSpace.CastRayFirstFiltered(lRay, this.ObstacleFilter);
         
-        //USe Axis aligned casts for padding checks
+        //Use Axis aligned casts for padding checks.
+        //Adjust the newIntendedPos by the differences between the raycast distances and PaddingRadius
         if(uResult.ObjectHit != null && uResult.Distance < this.PaddingRadius)
         {
             var dif = this.PaddingRadius - uResult.Distance;
@@ -185,6 +214,7 @@ class ThirdPersonFollowCam : ZilchComponent
             newIntendedPos += -lRay.Direction * dif;
         }
         
+        //Interpolate towards the new Translation/Rotation
         var newPos = Math.Lerp(this.Transform.WorldTranslation, newIntendedPos, this.BaseTranslationSpeed * event.Dt);
         this.Transform.Translation = newPos;
         
@@ -194,6 +224,9 @@ class ThirdPersonFollowCam : ZilchComponent
     
     function DrawRay(ray : Ray, len : Real)
     {
+        if(!this.DrawDebugRays)
+            return;
+        
         var line = DebugLine();
         line.Start = ray.Start;
         line.End = ray.Start + (ray.Direction * Math.Clamp(len, 1.0, 100.0));

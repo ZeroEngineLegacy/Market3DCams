@@ -53,9 +53,9 @@ Level =
 		},
 		Transform = 
 		{
-			Vec3 Translation = [-17.5155697, 10.8123646, 14.9790344],
+			Vec3 Translation = [3.71731806, 14.2447109, 8.31217003],
 			Vec3 Scale = [1, 1, 1],
-			Quat Rotation = [-0.152834952, -0.535520554, -0.0992525592, 0.824626148],
+			Quat Rotation = [-0.212269157, 0.721311271, 0.251186818, 0.609554768],
 		},
 		Camera = 
 		{
@@ -118,8 +118,8 @@ Level =
 		{
 			ControlMode ControlMode = Orbit,
 			float LookDistance = 13.0616589,
-			float VerticalAngle = 0.366517991,
-			float HorizontalAngle = 7.43510628,
+			float VerticalAngle = 0.670205534,
+			float HorizontalAngle = 4.54483652,
 			Vec3 LookTarget = [-6.37567472, 6.13149929, 10.0192814],
 			float MoveSensitivity = 1,
 		},
@@ -236,10 +236,10 @@ Level =
 			float BaseTranslationSpeed = 3,
 			float BaseRotationSpeed = 240,
 			Vec3 WorldUp = [0, 1, 0],
-			float ForwardSensorAngle = 45,
+			float ForwardSensorAngle = 30,
 			float BackwardSensorAngle = 15,
-			float MinInfluenceDist = 2,
-			float ForwardSensorInfluence = 1,
+			float MinInfluenceDist = 6,
+			float ForwardSensorInfluence = 1.5,
 			float PaddingRadius = 0.5,
 			float BackPadding = 0.5,
 			string CameraCollisionGroup = "5802f2483b80d77c:Camera",
@@ -300,7 +300,7 @@ Level =
 		},
 		RigidBody = 
 		{
-			Vec3 Velocity = [-544.700745, 0, 0],
+			Vec3 Velocity = [0, 0, 0],
 			Vec3 AngularVelocity = [0, 0, 0],
 			Enum DynamicState = Kinematic,
 			bool AllowSleep = true,
@@ -397,9 +397,16 @@ Level =
 				},
 				Transform = 
 				{
-					Vec3 Translation = [0, 1.30702424, 1.92952681],
+					Vec3 Translation = [0, 1.30702424, 1.98694277],
 					Vec3 Scale = [1, 1, 1],
 					Quat Rotation = [0, 0, 0, 1],
+				},
+				Orientation = 
+				{
+					Vec3 GlobalUp = [0, 1, 0],
+					Vec3 UpVector = [0, 1, 0],
+					Vec3 ForwardVector = [0, 0, 1],
+					OrientationBases DefaultBases = ForwardZUpY,
 				},
 			},
 		},
@@ -439,7 +446,7 @@ Level =
 		},
 		RigidBody = 
 		{
-			Vec3 Velocity = [-38.3110008, 0, 315.153564],
+			Vec3 Velocity = [0, 0, 0],
 			Vec3 AngularVelocity = [0, 0, 0],
 			Enum DynamicState = Kinematic,
 			bool AllowSleep = true,
@@ -483,7 +490,7 @@ Level =
 		},
 		RigidBody = 
 		{
-			Vec3 Velocity = [812.733948, 0, 0],
+			Vec3 Velocity = [0, 0, 0],
 			Vec3 AngularVelocity = [0, 0, 0],
 			Enum DynamicState = Kinematic,
 			bool AllowSleep = true,
@@ -527,7 +534,7 @@ Level =
 		},
 		RigidBody = 
 		{
-			Vec3 Velocity = [-1375.40552, 0, -1081.68469],
+			Vec3 Velocity = [0, 0, 0],
 			Vec3 AngularVelocity = [0, 0, 0],
 			Enum DynamicState = Kinematic,
 			bool AllowSleep = true,
@@ -571,8 +578,8 @@ Level =
 		},
 		RigidBody = 
 		{
-			Vec3 Velocity = [1207.94031, 0, 0],
-			Vec3 AngularVelocity = [0, 43.459198, 0],
+			Vec3 Velocity = [0, 0, 0],
+			Vec3 AngularVelocity = [0, 0, 0],
 			Enum DynamicState = Kinematic,
 			bool AllowSleep = true,
 			bool Asleep = false,
