@@ -1,8 +1,13 @@
-//Copyright: © 2016 DigiPen, All Rights Reserved.
-//Author:    Zero Engine Team
+/************************************************************************************************************/
+/* Copyright 2017 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/5/2017                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Arend Danielek                                                                          */
+/* Class: QuaternionCamera                                                                                  */
+/* Brief: First person camera that uses quaternions to build rotations. Rotates with right mouse.           */
+/* Moves with WASD, also uses 'q' and 'e' to pan along the world's up/down vector.                          */
+/************************************************************************************************************/
 
-// First person camera that uses quaternions to build rotations. Rotates with right mouse.
-// Moves with WASD, also uses 'q' and 'e' to pan along the world's up/down vector.
 class QuaternionCamera : ZilchComponent
 {
     // The movement speed of the camera.
