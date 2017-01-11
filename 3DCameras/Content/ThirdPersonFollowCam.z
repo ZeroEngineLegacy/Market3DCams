@@ -4,7 +4,7 @@
 /* Author: Zero Engine Team                                                                                 */
 /* Last updated by: Arend Danielek                                                                          */
 /* Class: ThirdPersonFollowCam                                                                              */
-/* Brief: Implements a 3D camera which attempts to independently follow and object in third person with out */
+/* Brief: Implements a 3D camera which attempts to independently follow an object in third person with out  */
 /* clipping through geometry.                                                                               */
 /************************************************************************************************************/
 

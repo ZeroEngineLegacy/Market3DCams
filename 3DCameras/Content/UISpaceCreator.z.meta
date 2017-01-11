@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "UISpaceCreator",
+		uint64 ResourceId = 5817fcd290587a80,
+	},
+},
