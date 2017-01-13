@@ -121,7 +121,7 @@ class ArcBallCamera : ZilchComponent
     function OnMouseScroll(event : ViewportMouseEvent)
     {
         //Calculate the new TargetZoom based off the mouse scroll for the frame
-        var newZoom = this.TargetZoom + (event.Scroll.Y);
+        var newZoom = this.TargetZoom - (event.Scroll.Y);
         this.TargetZoom = Math.Clamp(newZoom, this.MinZoom, this.MaxZoom);
     }
 }

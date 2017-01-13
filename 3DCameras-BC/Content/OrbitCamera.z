@@ -4,9 +4,8 @@
 /* Author: Zero Engine Team                                                                                 */
 /* Last updated by: Arend Danielek                                                                          */
 /* Class: ViewportConfiguration                                                                             */
-/* Brief: A camera that orbits around a focal point. Rotates with right mouse or on left mouse when 'q' is  */
-/* held. Pans with left mouse when 'e' is held. zooms in and out towards the focal point with the scroll    */
-/* wheel.                                                                                                   */
+/* Brief: A camera that orbits around a focal point. Rotates with right mouse and pans with left mouse.     */
+/* Zooms in and out towards the focal point with the scroll wheel.                                          */
 /************************************************************************************************************/
 
 class OrbitCamera : ZilchComponent
@@ -61,9 +60,9 @@ class OrbitCamera : ZilchComponent
     
     function OnLogicUpdate(updateEvent : UpdateEvent)
     {
-        // If the right mouse is down or q is down then we update our position on the
+        // If the right mouse is down then we update our position on the
         // rotation sphere. This is controlled by the movement of the mouse.
-        if(Zero.Mouse.IsButtonDown(MouseButtons.Right) || (Zero.Keyboard.KeyIsDown(Keys.Q) && (Zero.Mouse.IsButtonDown(MouseButtons.Left) || Zero.Mouse.IsButtonDown(MouseButtons.Left))))
+        if(Zero.Mouse.IsButtonDown(MouseButtons.Right))
         {
             this.Phi -= this.MouseDelta.Y * this.RotationSensitivity;
             // Clamp the pole angle so that we don't flip the camera upside-down
@@ -113,9 +112,9 @@ class OrbitCamera : ZilchComponent
         up = Math.Cross(right, forward);
         up = Math.Normalize(up);
         
-        // If e is pressed and the left mouse is down, then we'll use the mouse
+        // If left mouse is down, then we'll use the mouse
         // movement to pan along the camera's x and y vector
-        if(Zero.Keyboard.KeyIsDown(Keys.E) && Zero.Mouse.IsButtonDown(MouseButtons.Left))
+        if(Zero.Mouse.IsButtonDown(MouseButtons.Left))
         {
             movementForward = up;
             movementRight = right;

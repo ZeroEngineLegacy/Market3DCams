@@ -37,6 +37,11 @@ Level
 			var HilightInterval = 10
 			var FollowEditorCamera = false
 		}
+		UISpaceCreator 
+		{
+			var UILevel = "581b34a765e553fd:QuaternionCameraInstructions"
+			var UISpace = "576f215c0825de61:Space"
+		}
 	}
 	Cog 
 	{

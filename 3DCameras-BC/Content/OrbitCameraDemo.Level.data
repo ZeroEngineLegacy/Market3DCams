@@ -37,6 +37,11 @@ Level
 			var HilightInterval = 10
 			var FollowEditorCamera = false
 		}
+		UISpaceCreator 
+		{
+			var UILevel = "581b3551aaf76fb9:OrbitCameraInstructions"
+			var UISpace = "576f215c0825de61:Space"
+		}
 	}
 	Cog 
 	{
@@ -172,9 +177,9 @@ Level
 		var LinkId = 4
 		Transform 
 		{
-			var Translation = Vec3{-7.92617226, 5.56191397, 20.3295822}
+			var Translation = Vec3{-3.54930735, 5.59141541, 21.1214371}
 			var Scale = Vec3{1, 1, 1}
-			var Rotation = Quat{-0.126056671, -0.31857869, -0.0427904949, 0.938502192}
+			var Rotation = Quat{-0.146902487, -0.152138546, -0.0228730198, 0.977113307}
 		}
 		CameraViewport 
 		{
@@ -231,9 +236,9 @@ Level
 		EditorCameraController 
 		{
 			var ControlMode = ControlMode.Orbit
-			var LookDistance = 13.4985819
-			var VerticalAngle = 0.267035514
-			var HorizontalAngle = 0.654498756
+			var LookDistance = 12.2140169
+			var VerticalAngle = 0.298451453
+			var HorizontalAngle = 0.308923602
 			var LookTarget = Vec3{0, 2, 10}
 			var MoveSensitivity = 1
 		}
