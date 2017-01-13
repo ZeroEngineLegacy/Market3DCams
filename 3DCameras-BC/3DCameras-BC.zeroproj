@@ -4,13 +4,13 @@ Cog
 	var Name = ""
 	Project 
 	{
-		var ProjectName = "3DCameras"
+		var ProjectName = "3DCameras-BC"
 		var ProjectOwner = ""
 		var DefaultLevel = "Level"
 		var ProjectSpace = "Space"
 		var ProjectEngineRevision = 15136
 		var AutoTakeProjectScreenshot = true
-		var Guid = 0x580695a0f660c8b5
+		var Guid = 0x5813312a0649d59f
 	}
 	EditorSettings 
 	{

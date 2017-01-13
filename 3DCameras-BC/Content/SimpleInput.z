@@ -1,0 +1,64 @@
+class CharMoveController : ZilchComponent
+{
+    [Dependency]
+    var Orientation : Orientation;
+
+    [Dependency]
+    var OrientationHelper : OrientationHelper;
+
+    [Dependency]
+    var SweptController : SweptController;
+
+    //Speed at which the character will rotate in oreder orient itself
+    [Property]
+    var OrientSpeed : Real = 7.0;
+
+    //If the character model currently rotating idenpendently to reorient itself with the camera Y-Axis WorldRotation
+    var Orienting : Boolean = false;
+    //Direction the player should be facing upon completing reorientation
+    var OrientDir : Real3 = Real3();
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        Zero.Connect(this.Owner, Events.CharReorientEvent, this.OnCharReorientEvent);
+        Zero.Connect(this.Owner, Events.CharMoveEvent, this.OnCharMoveEvent);
+        Zero.Connect(this.Owner, Events.CharJumpEvent, this.OnCharJumpEvent);
+    }
+
+        function OnLogicUpdate(event : UpdateEvent)
+    {
+        if(!this.Orienting)
+            return;
+        
+        //Get character target rotation quaterion
+        var targRot = this.Orientation.GetLookAtDirectionWithUpRotation(this.OrientDir, Real3(0,1,0));
+        //Calculate new character rotation by interpolating towards target rotation
+        var newRot = Math.Slerp(this.Owner.Transform.Rotation, targRot, Math.ToRadians(this.OrientSpeed) * event.Dt);
+        //Set new character rotation
+        this.Owner.Transform.Rotation = newRot;
+        //Set Orienting state to false 
+        this.Orienting = false;
+    }
+
+    function OnCharJumpEvent(event : CharJumpEvent)
+    {
+        this.SweptController.Jump();
+    }
+
+    //CharReorientEvent is dispatched each frame the character should be reorienting
+    function OnCharReorientEvent(event : CharReorientEvent)
+    {
+        //Direction the characer model should orient towards
+        this.OrientDir = event.OrientDir;
+        //Set Orienting state to true
+        this.Orienting = true;
+    }
+
+    function OnCharMoveEvent(event : CharMoveEvent)
+    {
+        //Update the SweptController with the forward value of the move direction
+        this.Owner.Transform.RotateAnglesWorld(event.MoveDir.X * event.Dt * Real3(0,Math.ToRadians(this.OrientSpeed), 0));
+        this.SweptController.Update(event.MoveDir.Y * this.Orientation.WorldForward, event.Dt);
+    }
+}

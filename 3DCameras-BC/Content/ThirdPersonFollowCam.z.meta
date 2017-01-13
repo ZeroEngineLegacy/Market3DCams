@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "ThirdPersonFollowCam"
+		var ResourceId = 0x5814a9f1c110b33a
+	}
+}
