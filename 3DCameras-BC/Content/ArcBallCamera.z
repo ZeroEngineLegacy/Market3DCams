@@ -19,7 +19,6 @@ class ArcBallCamera : ZilchComponent
     //Radial distance per second the camera will rotate around the mount
     [Property]
     var RotationSpeed : Real3 = Real3();
-    var RotationSpeedRadians : Real3 { get { return Math.ToRadians(this.RotationSpeed); } }
     
     //Max positive rotation around the local X-Axis
     [Property]
@@ -28,6 +27,61 @@ class ArcBallCamera : ZilchComponent
     //Min positive rotation around the local X-Axis
     [Property]
     var MinVerticalAngle : Real = -30.0;
+    
+    //Cog Path to the Focus object
+    [Property]
+    var FocusObjPath : CogPath = null;
+    
+    //Min pitch constraint
+    [Property]
+    var MinPitch : Real = -30.0;
+    
+    //Max pitch constraint
+    [Property]
+    var MaxPitch : Real = -30.0;
+    
+    //Interpolation speed of the camera when it is "zooming"
+    [Property]
+    var ZoomSpeed : Real = 5.0;
+    
+    [Property]
+    var MinZoom : Real = 3.0;
+    
+    [Property]
+    var MaxZoom : Real = 10.0;
+    
+    var RotationSpeedRadians : Real3
+    {
+        get { return Math.ToRadians(this.RotationSpeed); }
+    }
+    
+    //Getter for a reference to the focus object via the CogPath "FocusObjPath"
+    var FocusObj : Cog
+    {
+        get { return this.FocusObjPath.Cog; }
+    }
+    
+    var MinPitchRadians : Real
+    {
+        get { return Math.ToRadians(this.MinPitch); }
+    }
+    
+    var MaxPitchRadians : Real
+    {
+        get { return Math.ToRadians(this.MaxPitch); }
+    }
+    
+    var CurZoom : Real
+    {
+        get { return Math.Length(this.Transform.Translation); }
+        set
+        {
+            var dir = Math.Normalize(this.Transform.Translation);
+            this.Transform.Translation = dir * value;
+        }
+    }
+    
+    var TargetZoom : Real = 0.0;
     
     //Getter for a reference to the player object via the object hierarchy
     var Player : Cog
@@ -41,51 +95,12 @@ class ArcBallCamera : ZilchComponent
         get { return this.Owner.Parent; }
     }
     
-    //Cog Path to the Focus object
-    [Property]
-    var FocusObjPath : CogPath = null;
-    
-    //Getter for a reference to the focus object via the CogPath "FocusObjPath"
-    var FocusObj : Cog
-    {
-        get { return this.FocusObjPath.Cog; }
-    }
-    
     //Target rotation for the camera mount object
     var MountTargetAngles : Real3 = Real3();
-    var MountTargetRotation : Quaternion { get { return Math.ToQuaternion(this.MountTargetAngles); } }
-    
-    //Min pitch constraint
-    [Property]
-    var MinPitch : Real = -30.0;
-    var MinPitchRadians : Real { get { return Math.ToRadians(this.MinPitch); } }
-    
-    //Max pitch constraint
-    [Property]
-    var MaxPitch : Real = -30.0;
-    var MaxPitchRadians : Real { get { return Math.ToRadians(this.MaxPitch); } }
-    
-    //Interpolation speed of the camera when it is "zooming"
-    [Property]
-    var ZoomSpeed : Real = 5.0;
-    
-    [Property]
-    var MinZoom : Real = 3.0;
-    
-    [Property]
-    var MaxZoom : Real = 10.0;
-    
-    var CurZoom : Real
+    var MountTargetRotation : Quaternion
     {
-        get { return Math.Length(this.Transform.Translation); }
-        set
-        {
-            var dir = Math.Normalize(this.Transform.Translation);
-            this.Transform.Translation = dir * value;
-        }
+        get { return Math.ToQuaternion(this.MountTargetAngles); }
     }
-    
-    var TargetZoom : Real = 0.0;
     
     function Initialize(init : CogInitializer)
     {
