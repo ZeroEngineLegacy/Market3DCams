@@ -311,7 +311,7 @@ Level
 			var ForwardVector = Vec3{-0, -0, -1}
 			var DefaultBases = OrientationBases.Custom
 		}
-		ThirdPersonFollowCam 
+		ThirdPersonCamera 
 		{
 			var FocusObjectCogPath = CogPath
 			{
@@ -333,12 +333,12 @@ Level
 			var BaseRotationSpeed = 240
 			var WorldUp = Vec3{0, 1, 0}
 			var ForwardSensorAngle = 30
-			var BackwardSensorAngle = 15
-			var MinInfluenceDist = 6
-			var ForwardSensorInfluence = 1.5
+			var BackwardSensorAngle = 30
+			var MinInfluenceDist = 5
+			var ForwardSensorInfluence = 0.5
 			var PaddingRadius = 0.5
-			var BackPadding = 0.5
-			var CameraCollisionGroup = "4e740859314e5515:DefaultGroup"
+			var BackPadding = 1
+			var CameraCollisionGroup = ""
 			var DrawDebugRays = true
 		}
 	}
