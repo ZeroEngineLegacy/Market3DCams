@@ -1,16 +1,9 @@
-TextContent = 
+[Version:1]
+TextContent 
 {
-	ZilchScriptBuilder = 
+	ZilchScriptBuilder 
 	{
-		string Name = "ContactDebugDraw",
-		uint64 ResourceId = 532e2ab87b175781,
-	},
-	ContentTags = 
-	{
-		Array Tags = 
-		[
-			"DebugScripts",
-			"DebugHelpers",
-		],
-	},
-},
+		var Name = "ContactDebugDraw"
+		var ResourceId = 0x5814a9f1c12d2ae8
+	}
+}

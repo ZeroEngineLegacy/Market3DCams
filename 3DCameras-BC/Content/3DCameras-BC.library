@@ -1,8 +1,0 @@
-[Version:1]
-ContentLibrary 
-{
-	var Name = "3DCameras-BC"
-	var LibraryId = 0x5814ae621855c07d
-	var SourceControlType = ""
-	var ReadOnly = false
-}

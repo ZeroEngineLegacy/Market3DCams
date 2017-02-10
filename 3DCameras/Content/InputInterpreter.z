@@ -1,82 +1,81 @@
 class CharLookEvent : ZilchEvent
 {
-    sends CharLookEvent : CharLookEvent;
-    var LookDir : Real2 = Real2();
+  sends CharLookEvent : CharLookEvent;
+  var LookDir : Real2 = Real2();
 }
 
 class CharMoveEvent : ZilchEvent
 {
-    sends CharMoveEvent : CharMoveEvent;
-    var MoveDir : Real3 = Real3();
-    var Dt : Real = 0.0;
+  sends CharMoveEvent : CharMoveEvent;
+  var MoveDir : Real3 = Real3();
+  var Dt : Real = 0.0;
 }
 
 class CharJumpEvent : ZilchEvent
 {
-    sends CharJumpEvent : CharJumpEvent;
+  sends CharJumpEvent : CharJumpEvent;
 }
 
 class CharReorientEvent : ZilchEvent
 {
-    sends CharReorientEvent : CharReorientEvent;
-    var OrientDir : Real3 = Real3();
+  sends CharReorientEvent : CharReorientEvent;
+  var OrientDir : Real3 = Real3();
 }
 
 class InputInterpreter : ZilchComponent
 {
-    [Dependency]
-    var Orientation : Orientation;
+  [Dependency]
+  var Orientation : Orientation;
 
-    [Dependency]
-    var SweptController : SweptController;
+  [Dependency]
+  var SweptController : SweptController;
 
-    [Property]
-    var ForwardKey : Keys = Keys.W;
+  [Property]
+  var ForwardKey : Keys = Keys.W;
 
-    [Property]
-    var BackwardKey : Keys = Keys.S;
+  [Property]
+  var BackwardKey : Keys = Keys.S;
 
-    [Property]
-    var LeftKey : Keys = Keys.A;
+  [Property]
+  var LeftKey : Keys = Keys.A;
 
-    [Property]
-    var RightKey : Keys = Keys.D;
+  [Property]
+  var RightKey : Keys = Keys.D;
 
-    [Property]
-    var KeyboardRotSpeed : Real = 3.0;
+  [Property]
+  var KeyboardRotSpeed : Real = 3.0;
 
-    [Property]
-    var JumpKey : Keys = Keys.Space;
+  [Property]
+  var JumpKey : Keys = Keys.Space;
 
-    function Initialize(init : CogInitializer)
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    var moveDir = Real3();
+    if(Zero.Keyboard.KeyIsDown(this.ForwardKey))
+      moveDir.Y += 1;
+    if(Zero.Keyboard.KeyIsDown(this.BackwardKey))
+      moveDir.Y += -1;
+    
+    if(Zero.Keyboard.KeyIsDown(this.LeftKey))
+      moveDir.X += 1;
+    if(Zero.Keyboard.KeyIsDown(this.RightKey))
+      moveDir.X += -1;
+    
+    if(Zero.Keyboard.KeyIsPressed(this.JumpKey))
     {
-        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+      this.Owner.DispatchEvent(Events.CharJumpEvent, CharJumpEvent());
+      this.Owner.DispatchDown(Events.CharJumpEvent, CharJumpEvent());
     }
-
-    function OnLogicUpdate(event : UpdateEvent)
-    {
-        var moveDir = Real3();
-        if(Zero.Keyboard.KeyIsDown(this.ForwardKey))
-            moveDir.Y += 1;
-        if(Zero.Keyboard.KeyIsDown(this.BackwardKey))
-            moveDir.Y += -1;
-            
-        
-        if(Zero.Keyboard.KeyIsDown(this.LeftKey))
-            moveDir.X += 1;
-        if(Zero.Keyboard.KeyIsDown(this.RightKey))
-            moveDir.X += -1;
-        
-        if(Zero.Keyboard.KeyIsPressed(this.JumpKey))
-        {
-            this.Owner.DispatchEvent(Events.CharJumpEvent, CharJumpEvent());
-            this.Owner.DispatchDown(Events.CharJumpEvent, CharJumpEvent());
-        }
-        
-        var moveEvent = CharMoveEvent();
-        moveEvent.MoveDir = moveDir;
-        moveEvent.Dt = event.Dt;
-        this.Owner.DispatchEvent(Events.CharMoveEvent, moveEvent);
-        this.Owner.DispatchDown(Events.CharMoveEvent, moveEvent);
-    }
+    
+    var moveEvent = CharMoveEvent();
+    moveEvent.MoveDir = moveDir;
+    moveEvent.Dt = event.Dt;
+    this.Owner.DispatchEvent(Events.CharMoveEvent, moveEvent);
+    this.Owner.DispatchDown(Events.CharMoveEvent, moveEvent);
+  }
 }

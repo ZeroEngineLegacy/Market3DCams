@@ -1,8 +1,16 @@
-TextContent = 
+[Version:1]
+TextContent 
 {
-	ZilchScriptBuilder = 
+	ZilchScriptBuilder 
 	{
-		string Name = "ArcBallCamera",
-		uint64 ResourceId = 583d368f6f62c72a,
-	},
-},
+		var Name = "ArcBallCamera"
+		var ResourceId = 0x5814a9f1c12ceca6
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Camera"
+		}
+	}
+}

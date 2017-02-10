@@ -1,7 +1,8 @@
-ContentLibrary = 
+[Version:1]
+ContentLibrary 
 {
-	string Name = "3DCameras",
-	uint64 LibraryId = 580695a0f661403f,
-	string SourceControlType = "",
-	bool ReadOnly = false,
-},
+	var Name = "3DCameras"
+	var LibraryId = 0x5814ae621855c07d
+	var SourceControlType = ""
+	var ReadOnly = false
+}

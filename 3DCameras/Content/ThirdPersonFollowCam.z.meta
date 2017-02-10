@@ -1,8 +1,0 @@
-TextContent = 
-{
-	ZilchScriptBuilder = 
-	{
-		string Name = "ThirdPersonFollowCam",
-		uint64 ResourceId = 5806add009110df4,
-	},
-},
