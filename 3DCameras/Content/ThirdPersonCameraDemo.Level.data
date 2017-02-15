@@ -33,8 +33,8 @@ Level
 			var AlwaysDrawInEditor = true
 			var DrawInGame = false
 			var GridColor = Vec4{0.5, 0.5, 0.5, 0.400000006}
-			var GridHiLight = Vec4{0, 0, 0, 0.400000006}
-			var HilightInterval = 10
+			var GridHighlight = Vec4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
 			var FollowEditorCamera = false
 		}
 		UISpaceCreator 
@@ -93,8 +93,7 @@ Level
 		Orientation 
 		{
 			var GlobalUp = Vec3{0, 1, 0}
-			var UpVector = Vec3{0, 1, 0}
-			var ForwardVector = Vec3{-0, -0, -1}
+			var LocalOrientationBasis = Quat{0, 0, 0, 1}
 			var DefaultBases = OrientationBases.ForwardNegativeZUpY
 		}
 		CameraViewport 
@@ -151,13 +150,14 @@ Level
 		}
 		ShadowRenderer 
 		{
+			var ResolutionValue = ShadowResolution.High
 		}
 		Model 
 		{
 			var Visible = true
 			var ViewCulling = false
 			var VisibilityEvents = true
-			var Material = "580267aabbf7843e:DirectionalLightShadows"
+			var Material = ""
 			var Mesh = ""
 		}
 		DirectionalLight 
@@ -177,7 +177,7 @@ Level
 		var LinkId = 4
 		Transform 
 		{
-			var Translation = Vec3{38.1414833, 18.9828682, -8.45092678}
+			var Translation = Vec3{5.99830341, 3.42458534, -1.64106286}
 			var Scale = Vec3{1, 1, 1}
 			var Rotation = Quat{-0.112119146, 0.78125608, 0.146913856, 0.596225202}
 		}
@@ -236,10 +236,10 @@ Level
 		EditorCameraController 
 		{
 			var ControlMode = ControlMode.Orbit
-			var LookDistance = 49.3195343
+			var LookDistance = 6.67467928
 			var VerticalAngle = 0.371755064
 			var HorizontalAngle = 29.5780773
-			var LookTarget = Vec3{-6.18027735, 1.06748974, 3.67496848}
+			var LookTarget = Vec3{0, 1.00000012, 1.1920929e-07}
 			var MoveSensitivity = 1
 		}
 	}
@@ -312,8 +312,7 @@ Level
 		Orientation 
 		{
 			var GlobalUp = Vec3{0, 1, 0}
-			var UpVector = Vec3{0, 1, 0}
-			var ForwardVector = Vec3{-0, -0, -1}
+			var LocalOrientationBasis = Quat{0, 0, 0, 1}
 			var DefaultBases = OrientationBases.Custom
 		}
 		ThirdPersonCamera 
@@ -412,8 +411,7 @@ Level
 		Orientation 
 		{
 			var GlobalUp = Vec3{0, 1, 0}
-			var UpVector = Vec3{0, 1, 0}
-			var ForwardVector = Vec3{0, 0, 1}
+			var LocalOrientationBasis = Quat{0, 1, 0, -0}
 			var DefaultBases = OrientationBases.ForwardZUpY
 		}
 		InputInterpreter 

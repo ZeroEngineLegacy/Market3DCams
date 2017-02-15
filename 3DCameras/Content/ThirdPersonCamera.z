@@ -121,6 +121,7 @@ class ThirdPersonCamera : ZilchComponent
       if (len < focusToCamLen)
       {
         newIntendedPos = pos + (dir / len) * -this.BackPadding;
+        curPos = newIntendedPos;
       }
     }
     
@@ -207,7 +208,7 @@ class ThirdPersonCamera : ZilchComponent
     
     //Interpolate towards the new Translation/Rotation
     var newPos = Math.Lerp(curPos, newIntendedPos, this.BaseTranslationSpeed * event.Dt);
-    this.Transform.Translation = newPos;
+    this.Transform.WorldTranslation = newPos;
     
     var newRot = Math.Slerp(this.Transform.Rotation, this.TargetWorldRotation, this.BaseRotationSpeedRadians * event.Dt);
     this.Transform.Rotation = newRot;
