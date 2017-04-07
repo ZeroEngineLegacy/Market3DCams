@@ -1,0 +1,11 @@
+[Version:1]
+Cog 
+{
+	var Name = "Renderer"
+	var LinkId = 1
+	UIRenderer 
+	{
+		var ClearColor = Real4{0, 0, 0, 0}
+		var DrawDebug = false
+	}
+}

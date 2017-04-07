@@ -11,7 +11,7 @@ Level
 			var WakeUpOnChange = false
 			var LocalSpaceDirection = true
 			var Strength = 10
-			var Direction = Vec3{0, -1, 0}
+			var Direction = Real3{0, -1, 0}
 		}
 		DragEffect 
 		{
@@ -32,31 +32,24 @@ Level
 			var DrawAxisOrigins = true
 			var AlwaysDrawInEditor = true
 			var DrawInGame = false
-			var GridColor = Vec4{0.5, 0.5, 0.5, 0.400000006}
-			var GridHiLight = Vec4{0, 0, 0, 0.400000006}
-			var HilightInterval = 10
+			var GridColor = Real4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Real4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
 			var FollowEditorCamera = false
 		}
 	}
-	Cog 
+	Cog [InheritId:"588497c6db9efe47:UIRenderer"]
 	{
-		var Name = "Renderer"
-		var LinkId = 2
-		DefaultRenderer 
-		{
-			var ClearColor = Vec4{0, 0, 0, 0}
-			var DrawDebug = true
-		}
 	}
 	Cog 
 	{
 		var Name = "EditorCamera"
-		var LinkId = 3
+		var LinkId = 2
 		Transform 
 		{
-			var Translation = Vec3{-10.0822392, -4.37431622, 7.18014383}
-			var Scale = Vec3{1, 1, 1}
-			var Rotation = Quat{-0.12007755, -0.0311833546, -0.00377360056, 0.992267549}
+			var Translation = Real3{-13.518446, -1.02761555, 23.7423172}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.104184367, -0.0806244612, -0.00847397093, 0.991248429}
 		}
 		CameraViewport 
 		{
@@ -65,8 +58,8 @@ Level
 			var RenderToViewport = true
 			var ForwardViewportEvents = false
 			var RenderOrder = 0
-			var NormalizedSize = Vec2{1, 1}
-			var NormalizedOffset = Vec2{0, 0}
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
 			var Camera = CogPath
 			{
 				var Path = "."
@@ -77,7 +70,7 @@ Level
 				var UpdatePathOnCogChange = true
 				var UpdateCogOnInitialize = true
 				var ResolvedNullErrorOccurred = false
-				var ResolvedCog = 3
+				var ResolvedCog = 2
 				var PathPreference0 = CogPathPreference.CogRelative
 				var PathPreference1 = CogPathPreference.SpaceRelative
 				var PathPreference2 = CogPathPreference.Absolute
@@ -92,18 +85,17 @@ Level
 				var UpdatePathOnCogChange = true
 				var UpdateCogOnInitialize = true
 				var ResolvedNullErrorOccurred = false
-				var ResolvedCog = 2
+				var ResolvedCog = 3
 				var PathPreference0 = CogPathPreference.CogRelative
 				var PathPreference1 = CogPathPreference.SpaceRelative
 				var PathPreference2 = CogPathPreference.Absolute
 			}
-			var Resolution = Vec2{1920, 1080}
+			var Resolution = Real2{1920, 1080}
 			var ViewportScaling = ViewportScaling.Fill
-			var MarginColor = Vec4{0, 0, 0, 1}
+			var MarginColor = Real4{0, 0, 0, 1}
 		}
 		Camera 
 		{
-			var Facing = Facing.NegativeZ
 			var NearPlane = 0.100000001
 			var FarPlane = 200
 			var PerspectiveMode = PerspectiveMode.Perspective
@@ -113,10 +105,10 @@ Level
 		EditorCameraController 
 		{
 			var ControlMode = ControlMode.Orbit
-			var LookDistance = 7.40818262
-			var VerticalAngle = 0.240855411
-			var HorizontalAngle = 0.0628320426
-			var LookTarget = Vec3{-9.63050175, -6.1414156, 0}
+			var LookDistance = 24.5960293
+			var VerticalAngle = 0.209439427
+			var HorizontalAngle = 0.162315249
+			var LookTarget = Real3{-9.63050175, -6.1414156, 0}
 			var MoveSensitivity = 1
 		}
 	}
@@ -126,9 +118,9 @@ Level
 		var LinkId = 4
 		Transform 
 		{
-			var Translation = Vec3{0, 2, 10}
-			var Scale = Vec3{1, 1, 1}
-			var Rotation = Quat{0, 0, 0, 1}
+			var Translation = Real3{0, 2, 10}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
 		}
 		CameraViewport 
 		{
@@ -137,8 +129,8 @@ Level
 			var RenderToViewport = true
 			var ForwardViewportEvents = true
 			var RenderOrder = 0
-			var NormalizedSize = Vec2{1, 1}
-			var NormalizedOffset = Vec2{0, 0}
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
 			var Camera = CogPath
 			{
 				var Path = "."
@@ -164,18 +156,17 @@ Level
 				var UpdatePathOnCogChange = true
 				var UpdateCogOnInitialize = true
 				var ResolvedNullErrorOccurred = false
-				var ResolvedCog = 2
+				var ResolvedCog = 3
 				var PathPreference0 = CogPathPreference.CogRelative
 				var PathPreference1 = CogPathPreference.SpaceRelative
 				var PathPreference2 = CogPathPreference.Absolute
 			}
-			var Resolution = Vec2{1920, 1080}
+			var Resolution = Real2{1920, 1080}
 			var ViewportScaling = ViewportScaling.Letterbox
-			var MarginColor = Vec4{0, 0, 0, 0}
+			var MarginColor = Real4{0, 0, 0, 0}
 		}
 		Camera 
 		{
-			var Facing = Facing.NegativeZ
 			var NearPlane = 0.100000001
 			var FarPlane = 200
 			var PerspectiveMode = PerspectiveMode.Orthographic
@@ -189,9 +180,9 @@ Level
 		var LinkId = 5
 		Transform 
 		{
-			var Translation = Vec3{-13.0523767, -3.19083834, 0}
-			var Scale = Vec3{2, 2, 2}
-			var Rotation = Quat{0, 0, 0, 1}
+			var Translation = Real3{-13.0523767, -3.19083834, 0}
+			var Scale = Real3{2, 2, 2}
+			var Rotation = Quaternion{0, 0, 0, 1}
 		}
 		Hierarchy 
 		{
@@ -201,9 +192,9 @@ Level
 				var LinkId = 6
 				Transform 
 				{
-					var Translation = Vec3{0, 0, 0}
-					var Scale = Vec3{1, 1, 1}
-					var Rotation = Quat{0, 0, 0, 1}
+					var Translation = Real3{0, 0, 0}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
 				}
 				SpriteText 
 				{
@@ -211,7 +202,7 @@ Level
 					var ViewCulling = true
 					var VisibilityEvents = true
 					var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
-					var VertexColor = Vec4{1, 1, 1, 1}
+					var VertexColor = Real4{1, 1, 1, 1}
 					var GeometryMode = SpriteGeometryMode.ZPlane
 					var Font = "57343753bb4eaaec:NotoSans-Regular"
 					var FontSize = 30
@@ -226,9 +217,9 @@ Level
 				var LinkId = 7
 				Transform 
 				{
-					var Translation = Vec3{0, -0.484116554, 0}
-					var Scale = Vec3{1, 1, 1}
-					var Rotation = Quat{0, 0, 0, 1}
+					var Translation = Real3{0, -0.484116554, 0}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
 				}
 				SpriteText 
 				{
@@ -236,7 +227,7 @@ Level
 					var ViewCulling = true
 					var VisibilityEvents = true
 					var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
-					var VertexColor = Vec4{1, 1, 1, 1}
+					var VertexColor = Real4{1, 1, 1, 1}
 					var GeometryMode = SpriteGeometryMode.ZPlane
 					var Font = "57343753bb4eaaec:NotoSans-Regular"
 					var FontSize = 30
@@ -251,9 +242,9 @@ Level
 				var LinkId = 8
 				Transform 
 				{
-					var Translation = Vec3{0, -0.973698854, 0}
-					var Scale = Vec3{1, 1, 1}
-					var Rotation = Quat{0, 0, 0, 1}
+					var Translation = Real3{0, -0.973698854, 0}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
 				}
 				SpriteText 
 				{
@@ -261,7 +252,7 @@ Level
 					var ViewCulling = true
 					var VisibilityEvents = true
 					var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
-					var VertexColor = Vec4{1, 1, 1, 1}
+					var VertexColor = Real4{1, 1, 1, 1}
 					var GeometryMode = SpriteGeometryMode.ZPlane
 					var Font = "57343753bb4eaaec:NotoSans-Regular"
 					var FontSize = 30
@@ -276,9 +267,9 @@ Level
 				var LinkId = 9
 				Transform 
 				{
-					var Translation = Vec3{0, -1.47528863, 0}
-					var Scale = Vec3{1, 1, 1}
-					var Rotation = Quat{0, 0, 0, 1}
+					var Translation = Real3{0, -1.47528863, 0}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
 				}
 				SpriteText 
 				{
@@ -286,7 +277,7 @@ Level
 					var ViewCulling = true
 					var VisibilityEvents = true
 					var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
-					var VertexColor = Vec4{1, 1, 1, 1}
+					var VertexColor = Real4{1, 1, 1, 1}
 					var GeometryMode = SpriteGeometryMode.ZPlane
 					var Font = "57343753bb4eaaec:NotoSans-Regular"
 					var FontSize = 30

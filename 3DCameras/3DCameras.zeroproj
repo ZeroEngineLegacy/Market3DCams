@@ -2,13 +2,13 @@
 Cog 
 {
 	var Name = ""
-	Project 
+	ProjectSettings 
 	{
 		var ProjectName = "3DCameras"
 		var ProjectOwner = ""
 		var DefaultLevel = "Level"
 		var ProjectSpace = "Space"
-		var ProjectEngineRevision = 15450
+		var ProjectEngineRevision = 16191
 		var AutoTakeProjectScreenshot = true
 		var Guid = 0x5813312a0649d59f
 	}
@@ -20,7 +20,7 @@ Cog
 		var ScriptReloadGame = ScriptReloadMethod.PatchObjects
 		var AutoUpdateContentChanges = true
 	}
-	ProjectSettings 
+	ProjectConfig 
 	{
 		var EditorMode = EditorMode.Mode3D
 	}

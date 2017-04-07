@@ -141,9 +141,6 @@ class OrbitCamera : ZilchComponent
     
     // Make sure to clear out the translational delta of the mouse
     this.MouseDelta = Real2(0.0, 0.0);
-    
-    // Draw where our origin is so we can see what's going on
-    this.DebugDrawOrigin();
   }
   
   function OnMouseMove(viewportMouseEvent : ViewportMouseEvent)
@@ -157,22 +154,5 @@ class OrbitCamera : ZilchComponent
     // modified to be an exponential zoom which tends to feel nicer)
     this.Radius -= viewportMouseEvent.Scroll.Y;
     this.Radius = Math.Clamp(this.Radius, this.MinDistance, this.MaxDistance);
-  }
-  
-  function DebugDrawOrigin()
-  {
-    // Draw a rotation sphere at our target if we're going to rotate the camera
-    if(Zero.Mouse.IsButtonDown(MouseButtons.Right) || Zero.Keyboard.KeyIsDown(Keys.Q))
-    {
-      var sphere = DebugSphere();
-      sphere.Position = this.Target;
-      sphere.Colored = true;
-    }
-    // Draw a transform 'plus' if we're going to transform the camera
-    else if(Zero.Keyboard.KeyIsDown(Keys.E))
-    {
-      var box = DebugLineCross();
-      box.Position = this.Target;
-    }
   }
 }

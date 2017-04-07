@@ -219,7 +219,7 @@ class ThirdPersonCamera : ZilchComponent
     var ray = Ray();
     ray.Start = start;
     ray.Direction = direction;
-    var result = this.Space.PhysicsSpace.CastRayFirstFiltered(ray, this.ObstacleFilter);
+    var result = this.Space.PhysicsSpace.CastRayFirst(ray, this.ObstacleFilter);
     
     if(this.DrawDebugRays)
         this.DrawRay(ray, result.Distance);
@@ -232,9 +232,10 @@ class ThirdPersonCamera : ZilchComponent
     if(!this.DrawDebugRays)
       return;
     
-    var line = DebugLine();
-    line.Start = ray.Start;
-    line.End = ray.Start + (ray.Direction * Math.Clamp(len, 1.0, 100.0));
+    var start = ray.Start;
+    var end = start + (ray.Direction * Math.Clamp(len, 1.0, 100.0));
+    var line = DebugLine(start, end);
+    
     line.Color = Real4(1,1,1,1);
     line.HeadSize = 0.25;
     line.OnTop = true;
