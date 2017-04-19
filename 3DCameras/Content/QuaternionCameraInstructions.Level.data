@@ -27,7 +27,7 @@ Level
 			var Active = true
 			var HalfCellOffset = false
 			var CellSize = 1
-			var Axis = GridAxis.YAxis
+			var Axis = AxisDirection.Y
 			var Lines = 100
 			var DrawAxisOrigins = true
 			var AlwaysDrawInEditor = true
@@ -46,7 +46,7 @@ Level
 		{
 			var Translation = Real3{-4.44455385, 3.86461592, 21.4619465}
 			var Scale = Real3{1, 1, 1}
-			var Rotation = Quaternion{-0.0867018476, -0.101536587, -0.0088833021, 0.991006672}
+			var Rotation = Quaternionernion{-0.0867018476, -0.101536587, -0.0088833021, 0.991006672}
 		}
 		CameraViewport 
 		{
@@ -117,7 +117,7 @@ Level
 		{
 			var Translation = Real3{0, 2, 10}
 			var Scale = Real3{1, 1, 1}
-			var Rotation = Quaternion{0, 0, 0, 1}
+			var Rotation = Quaternionernion{0, 0, 0, 1}
 		}
 		CameraViewport 
 		{
@@ -179,7 +179,7 @@ Level
 		{
 			var Translation = Real3{-13.8719978, -5.07918835, 0}
 			var Scale = Real3{2, 2, 2}
-			var Rotation = Quaternion{0, 0, 0, 1}
+			var Rotation = Quaternionernion{0, 0, 0, 1}
 		}
 		Hierarchy 
 		{
@@ -191,7 +191,7 @@ Level
 				{
 					var Translation = Real3{0, 0, 0}
 					var Scale = Real3{1, 1, 1}
-					var Rotation = Quaternion{0, 0, 0, 1}
+					var Rotation = Quaternionernion{0, 0, 0, 1}
 				}
 				SpriteText 
 				{
@@ -216,7 +216,7 @@ Level
 				{
 					var Translation = Real3{0, 0.484502792, 0}
 					var Scale = Real3{1, 1, 1}
-					var Rotation = Quaternion{0, 0, 0, 1}
+					var Rotation = Quaternionernion{0, 0, 0, 1}
 				}
 				SpriteText 
 				{
@@ -241,7 +241,7 @@ Level
 				{
 					var Translation = Real3{0, -0.500426531, 0}
 					var Scale = Real3{1, 1, 1}
-					var Rotation = Quaternion{0, 0, 0, 1}
+					var Rotation = Quaternionernion{0, 0, 0, 1}
 				}
 				SpriteText 
 				{
