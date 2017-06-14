@@ -24,7 +24,7 @@ class UIRenderer : ZilchComponent
     event.AddRenderTaskClearTarget(color, depth, this.ClearColor, 1.0);
 
     renderSettings.DepthSettings.DepthMode = DepthMode.Write;
-    renderSettings.DepthSettings.DepthTest = DepthTest.LessEqual;
+    renderSettings.DepthSettings.DepthCompareFunc = TextureCompareFunc.LessEqual;
     renderSettings.CullMode = CullMode.BackFace;
 
     event.AddRenderTaskRenderPass(renderSettings, RenderGroup.DefaultRenderGroup, renderPass);
