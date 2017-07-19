@@ -8,7 +8,7 @@ Cog
 		var ProjectOwner = ""
 		var DefaultLevel = "Level"
 		var ProjectSpace = "Space"
-		var ProjectEngineRevision = 16993
+		var ProjectEngineRevision = 17504
 		var AutoTakeProjectScreenshot = true
 		var Guid = 0x5813312a0649d59f
 	}
@@ -31,6 +31,7 @@ Cog
 		var MajorVersion = 0
 		var MinorVersion = 0
 		var PatchVersion = 0
-		var RevisionId = 16993
+		var RevisionId = 17414
+		var ShortChangeSet = "2799f464db3e"
 	}
 }

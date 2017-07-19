@@ -9,6 +9,7 @@ Level
 		{
 			var Active = true
 			var WakeUpOnChange = false
+			var DebugDrawEffect = true
 			var LocalSpaceDirection = true
 			var Strength = 10
 			var Direction = Real3{0, -1, 0}
@@ -17,6 +18,7 @@ Level
 		{
 			var Active = true
 			var WakeUpOnChange = false
+			var DebugDrawEffect = true
 			var LinearDamping = 0.200000003
 			var AngularDamping = 0.100000001
 			var LinearDrag = 0
@@ -45,45 +47,80 @@ Level
 	}
 	Cog 
 	{
-		var Name = "Renderer"
+		var Name = "EditorCamera"
 		var LinkId = 2
-		DeferredRenderer 
+		Transform 
 		{
-			var DrawDebug = true
-			var GeometryDebug = GeometryValue.None
-			var ShowDiffuse = true
-			var ShowSpecular = true
-			var Skybox = "5822dec85e380cf1:SimpleSkybox"
-			var DrawSkybox = true
-			var DirectLighting = true
-			var IndirectLighting = true
-			var IndirectIntensity = 1
-			var ToneMap = true
+			var Translation = Real3{-36.646389, 16.5566483, -7.78954363}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.122774154, -0.762214184, -0.151613876, 0.617227077}
 		}
-		Ssao 
+		CameraViewport 
 		{
-			var Enabled = true
-			var Radius = 1
-			var Intensity = 2.20000005
-			var BlurDepthThreshold = 0.0500000007
-			var DebugBuffer = false
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
 		}
-		Bloom 
+		Camera 
 		{
-			var Enabled = true
-			var Intensity = 0.100000001
-			var Threshold = 1
-			var Bloom1 = true
-			var Bloom2 = true
-			var Bloom3 = true
-			var Bloom4 = true
-			var Bloom5 = true
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var Previous3DMode = ControlMode.Orbit
+			var LookDistance = 40.5519485
+			var VerticalAngle = 0.392699182
+			var HorizontalAngle = 8.06342411
+			var LookTarget = Real3{0, 1.03808498, 0}
+			var MoveSensitivity = 1
 		}
 	}
 	Cog 
 	{
-		var Name = "DirectionalLight"
-		var LinkId = 3
+		var Name = "GameCamera"
+		var LinkId = 4
 		Transform 
 		{
 			var Translation = Real3{0, 50, 50}
@@ -105,92 +142,7 @@ Level
 			var RenderOrder = -1
 			var NormalizedSize = Real2{1, 1}
 			var NormalizedOffset = Real2{0, 0}
-			var Camera = CogPath
-			{
-				var Path = "."
-				var ErrorOnResolveToNull = false
-				var ErrorOnPathCantCompute = false
-				var ErrorOnDirectLinkFail = false
-				var UpdateCogOnPathChange = true
-				var UpdatePathOnCogChange = true
-				var UpdateCogOnInitialize = true
-				var ResolvedNullErrorOccurred = false
-				var ResolvedCog = 3
-				var PathPreference0 = CogPathPreference.CogRelative
-				var PathPreference1 = CogPathPreference.SpaceRelative
-				var PathPreference2 = CogPathPreference.Absolute
-			}
-			var Renderer = CogPath
-			{
-				var Path = "."
-				var ErrorOnResolveToNull = false
-				var ErrorOnPathCantCompute = false
-				var ErrorOnDirectLinkFail = false
-				var UpdateCogOnPathChange = true
-				var UpdatePathOnCogChange = true
-				var UpdateCogOnInitialize = true
-				var ResolvedNullErrorOccurred = false
-				var ResolvedCog = 3
-				var PathPreference0 = CogPathPreference.CogRelative
-				var PathPreference1 = CogPathPreference.SpaceRelative
-				var PathPreference2 = CogPathPreference.Absolute
-			}
-			var Resolution = Real2{1920, 1080}
-			var ViewportScaling = ViewportScaling.Fill
-			var MarginColor = Real4{0, 0, 0, 1}
-		}
-		Camera 
-		{
-			var Facing = Facing.NegativeZ
-			var NearPlane = 0.100000001
-			var FarPlane = 100
-			var PerspectiveMode = PerspectiveMode.Orthographic
-			var FieldOfView = 45
-			var Size = 64
-		}
-		ShadowRenderer 
-		{
-			var ResolutionValue = ShadowResolution.High
-		}
-		Model 
-		{
-			var Visible = true
-			var ViewCulling = false
-			var VisibilityEvents = true
-			var Material = ""
-			var Mesh = ""
-		}
-		DirectionalLight 
-		{
-			var LightColorValue = Real3{1, 1, 1}
-			var LightIntensityValue = 2
-			var CastShadowsValue = true
-			var NormalOffsetBias = 0.100000001
-		}
-		Hierarchy 
-		{
-		}
-	}
-	Cog 
-	{
-		var Name = "EditorCamera"
-		var LinkId = 4
-		Transform 
-		{
-			var Translation = Real3{-36.4433746, 15.1733627, -10.7951384}
-			var Scale = Real3{1, 1, 1}
-			var Rotation = Quaternion{-0.105953991, -0.788591325, -0.141890004, 0.588867307}
-		}
-		CameraViewport 
-		{
-			var RenderInEditor = true
-			var RenderInGame = false
-			var RenderToViewport = true
-			var ForwardViewportEvents = false
-			var RenderOrder = 0
-			var NormalizedSize = Real2{1, 1}
-			var NormalizedOffset = Real2{0, 0}
-			var Camera = CogPath
+			var CameraPath = CogPath
 			{
 				var Path = "."
 				var ErrorOnResolveToNull = false
@@ -205,9 +157,9 @@ Level
 				var PathPreference1 = CogPathPreference.SpaceRelative
 				var PathPreference2 = CogPathPreference.Absolute
 			}
-			var Renderer = CogPath
+			var RendererPath = CogPath
 			{
-				var Path = ":/Renderer"
+				var Path = "."
 				var ErrorOnResolveToNull = false
 				var ErrorOnPathCantCompute = false
 				var ErrorOnDirectLinkFail = false
@@ -215,7 +167,7 @@ Level
 				var UpdatePathOnCogChange = true
 				var UpdateCogOnInitialize = true
 				var ResolvedNullErrorOccurred = false
-				var ResolvedCog = 2
+				var ResolvedCog = 4
 				var PathPreference0 = CogPathPreference.CogRelative
 				var PathPreference1 = CogPathPreference.SpaceRelative
 				var PathPreference2 = CogPathPreference.Absolute
@@ -226,21 +178,54 @@ Level
 		}
 		Camera 
 		{
-			var Facing = Facing.NegativeZ
 			var NearPlane = 0.100000001
-			var FarPlane = 200
-			var PerspectiveMode = PerspectiveMode.Perspective
-			var FieldOfView = 60
-			var Size = 20
+			var FarPlane = 100
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 64
 		}
-		EditorCameraController 
+		Hierarchy 
 		{
-			var ControlMode = ControlMode.Orbit
-			var LookDistance = 40.5519485
-			var VerticalAngle = 0.356047243
-			var HorizontalAngle = 8.14196396
-			var LookTarget = Real3{0, 1.03808498, 0}
-			var MoveSensitivity = 1
+		}
+	}
+	Cog 
+	{
+		var Name = "Renderer"
+		var LinkId = 3
+		DeferredRenderer 
+		{
+			var GeometryDebug = GeometryValue.None
+			var EditorDebugDraw = true
+			var GameDebugDraw = true
+			var RenderDiffuse = true
+			var RenderSpecular = true
+			var RenderSkybox = true
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var ClearColor = Real4{0, 0, 0, 1}
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+		Ssao 
+		{
+			var Active = true
+			var Radius = 1
+			var Intensity = 2.20000005
+			var BlurDepthThreshold = 0.0500000007
+			var DebugBuffer = false
+		}
+		Bloom 
+		{
+			var Active = true
+			var Intensity = 0.100000001
+			var Threshold = 1
+			var Bloom1 = true
+			var Bloom2 = true
+			var Bloom3 = true
+			var Bloom4 = true
+			var Bloom5 = true
+			var DebugBuffer = false
 		}
 	}
 	Cog 
@@ -258,6 +243,10 @@ Level
 			var Visible = true
 			var ViewCulling = true
 			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
 			var Material = "583afb5e7bf75e18:ZeroMaterial"
 			var Mesh = "4de0354322b345ae:Cube"
 		}
@@ -286,6 +275,10 @@ Level
 			var Visible = true
 			var ViewCulling = true
 			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
 			var Material = "583afb5e7bf75e18:ZeroMaterial"
 			var Mesh = "4de0354322b3572e:Cylinder"
 		}
@@ -388,7 +381,7 @@ Level
 							var RenderOrder = 0
 							var NormalizedSize = Real2{1, 1}
 							var NormalizedOffset = Real2{0, 0}
-							var Camera = CogPath
+							var CameraPath = CogPath
 							{
 								var Path = "."
 								var ErrorOnResolveToNull = false
@@ -403,7 +396,7 @@ Level
 								var PathPreference1 = CogPathPreference.SpaceRelative
 								var PathPreference2 = CogPathPreference.Absolute
 							}
-							var Renderer = CogPath
+							var RendererPath = CogPath
 							{
 								var Path = ":/Renderer"
 								var ErrorOnResolveToNull = false
@@ -413,7 +406,7 @@ Level
 								var UpdatePathOnCogChange = true
 								var UpdateCogOnInitialize = true
 								var ResolvedNullErrorOccurred = false
-								var ResolvedCog = 2
+								var ResolvedCog = 3
 								var PathPreference0 = CogPathPreference.CogRelative
 								var PathPreference1 = CogPathPreference.SpaceRelative
 								var PathPreference2 = CogPathPreference.Absolute
@@ -424,7 +417,6 @@ Level
 						}
 						Camera 
 						{
-							var Facing = Facing.NegativeZ
 							var NearPlane = 0.100000001
 							var FarPlane = 200
 							var PerspectiveMode = PerspectiveMode.Perspective
