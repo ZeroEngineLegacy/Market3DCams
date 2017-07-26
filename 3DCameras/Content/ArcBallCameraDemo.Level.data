@@ -39,10 +39,11 @@ Level
 			var HighlightInterval = 10
 			var FollowEditorCamera = false
 		}
-		UISpaceCreator 
+		SpaceCreator 
 		{
-			var UILevel = "581b3e0cab1f3e34:ArcBallCameraInstructions"
-			var UISpace = "576f215c0825de61:Space"
+			var SpaceArchetype = "576f215c0825de61:Space"
+			var NewSpaceName = "UiSpace"
+			var LevelToLoad = "581b3e0cab1f3e34:ArcBallCameraInstructions"
 		}
 	}
 	Cog 

@@ -1,13 +1,12 @@
-/************************************************************************************************************/
-/* Copyright 2017 DigiPen, All Rights Reserved                                                              */
-/* Last Update: 1/5/2017                                                                                    */
-/* Author: Zero Engine Team                                                                                 */
-/* Last updated by: Arend Danielek                                                                          */
-/* Class: ThirdPersonCamera                                                                              */
-/* Brief: Implements a 3D camera which attempts to independently follow an object in third person with out  */
-/* clipping through geometry.                                                                               */
-/************************************************************************************************************/
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Arend Danielek
+// Last update: 1/5/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Implements a 3D camera which attempts to independently follow an object in
+// third person with out clipping through geometry.
 class ThirdPersonCamera : ZilchComponent
 {
   [Dependency]
