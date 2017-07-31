@@ -1,8 +1,0 @@
-TextContent = 
-{
-	ZilchScriptBuilder = 
-	{
-		string Name = "OrientationHelper",
-		uint64 ResourceId = 5806aab5230b9557,
-	},
-},

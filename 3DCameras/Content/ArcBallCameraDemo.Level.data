@@ -1,10 +1,9 @@
 [Version:1]
 Level 
 {
-	Cog 
+	Cog [ContextId:1]
 	{
 		var Name = "LevelSettings"
-		var LinkId = 1
 		GravityEffect 
 		{
 			var Active = true
@@ -46,13 +45,12 @@ Level
 			var LevelToLoad = "581b3e0cab1f3e34:ArcBallCameraInstructions"
 		}
 	}
-	Cog 
+	Cog [ContextId:2]
 	{
 		var Name = "EditorCamera"
-		var LinkId = 2
 		Transform 
 		{
-			var Translation = Real3{-36.646389, 16.5566483, -7.78954363}
+			var Translation = Real3{-34.3921967, 15.6352081, -7.69517803}
 			var Scale = Real3{1, 1, 1}
 			var Rotation = Quaternion{-0.122774154, -0.762214184, -0.151613876, 0.617227077}
 		}
@@ -60,11 +58,7 @@ Level
 		{
 			var RenderInEditor = true
 			var RenderInGame = false
-			var RenderToViewport = true
-			var ForwardViewportEvents = false
 			var RenderOrder = 0
-			var NormalizedSize = Real2{1, 1}
-			var NormalizedOffset = Real2{0, 0}
 			var CameraPath = CogPath
 			{
 				var Path = "."
@@ -75,7 +69,7 @@ Level
 				var UpdatePathOnCogChange = true
 				var UpdateCogOnInitialize = true
 				var ResolvedNullErrorOccurred = false
-				var ResolvedCog = 2
+				var Cog = 2
 				var PathPreference0 = CogPathPreference.CogRelative
 				var PathPreference1 = CogPathPreference.SpaceRelative
 				var PathPreference2 = CogPathPreference.Absolute
@@ -90,14 +84,18 @@ Level
 				var UpdatePathOnCogChange = true
 				var UpdateCogOnInitialize = true
 				var ResolvedNullErrorOccurred = false
-				var ResolvedCog = 3
+				var Cog = 3
 				var PathPreference0 = CogPathPreference.CogRelative
 				var PathPreference1 = CogPathPreference.SpaceRelative
 				var PathPreference2 = CogPathPreference.Absolute
 			}
-			var Resolution = Real2{1920, 1080}
+			var ResolutionOrAspect = Integer2{1920, 1080}
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
 			var ViewportScaling = ViewportScaling.Fill
 			var MarginColor = Real4{0, 0, 0, 1}
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
 		}
 		Camera 
 		{
@@ -114,14 +112,13 @@ Level
 			var LookDistance = 40.5519485
 			var VerticalAngle = 0.392699182
 			var HorizontalAngle = 8.06342411
-			var LookTarget = Real3{0, 1.03808498, 0}
+			var LookTarget = Real3{2.25419188, 0.116645642, 0.0943655074}
 			var MoveSensitivity = 1
 		}
 	}
-	Cog 
+	Cog [ContextId:4]
 	{
 		var Name = "GameCamera"
-		var LinkId = 4
 		Transform 
 		{
 			var Translation = Real3{0, 50, 50}
@@ -138,11 +135,7 @@ Level
 		{
 			var RenderInEditor = true
 			var RenderInGame = true
-			var RenderToViewport = false
-			var ForwardViewportEvents = false
 			var RenderOrder = -1
-			var NormalizedSize = Real2{1, 1}
-			var NormalizedOffset = Real2{0, 0}
 			var CameraPath = CogPath
 			{
 				var Path = "."
@@ -153,7 +146,7 @@ Level
 				var UpdatePathOnCogChange = true
 				var UpdateCogOnInitialize = true
 				var ResolvedNullErrorOccurred = false
-				var ResolvedCog = 4
+				var Cog = 4
 				var PathPreference0 = CogPathPreference.CogRelative
 				var PathPreference1 = CogPathPreference.SpaceRelative
 				var PathPreference2 = CogPathPreference.Absolute
@@ -168,14 +161,18 @@ Level
 				var UpdatePathOnCogChange = true
 				var UpdateCogOnInitialize = true
 				var ResolvedNullErrorOccurred = false
-				var ResolvedCog = 4
+				var Cog = 4
 				var PathPreference0 = CogPathPreference.CogRelative
 				var PathPreference1 = CogPathPreference.SpaceRelative
 				var PathPreference2 = CogPathPreference.Absolute
 			}
-			var Resolution = Real2{1920, 1080}
+			var ResolutionOrAspect = Integer2{1920, 1080}
+			var RenderToViewport = false
+			var ForwardViewportEvents = false
 			var ViewportScaling = ViewportScaling.Fill
 			var MarginColor = Real4{0, 0, 0, 1}
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
 		}
 		Camera 
 		{
@@ -189,10 +186,9 @@ Level
 		{
 		}
 	}
-	Cog 
+	Cog [ContextId:3]
 	{
 		var Name = "Renderer"
-		var LinkId = 3
 		DeferredRenderer 
 		{
 			var GeometryDebug = GeometryValue.None
@@ -229,10 +225,9 @@ Level
 			var DebugBuffer = false
 		}
 	}
-	Cog 
+	Cog [ContextId:5]
 	{
 		var Name = "Cube"
-		var LinkId = 5
 		Transform 
 		{
 			var Translation = Real3{0, 0, 0}
@@ -261,10 +256,9 @@ Level
 			var HalfSize = Real3{0.5, 0.5, 0.5}
 		}
 	}
-	Cog 
+	Cog [ContextId:6]
 	{
 		var Name = "Cylinder"
-		var LinkId = 6
 		Transform 
 		{
 			var Translation = Real3{0, 1.03808498, 0}
@@ -333,28 +327,20 @@ Level
 			var LocalOrientationBasis = Quaternion{0, 1, 0, -0}
 			var DefaultBases = OrientationBases.ForwardZUpY
 		}
-		OrientationHelper 
-		{
-		}
-		CharMoveController 
+		SimpleCharacterController 
 		{
 			var OrientSpeed = 80
-		}
-		InputInterpreter 
-		{
 			var ForwardKey = Keys.W
 			var BackwardKey = Keys.S
 			var LeftKey = Keys.A
 			var RightKey = Keys.D
-			var KeyboardRotSpeed = 3
 			var JumpKey = Keys.Space
 		}
 		Hierarchy 
 		{
-			Cog 
+			Cog [ContextId:7]
 			{
 				var Name = "Transform"
-				var LinkId = 7
 				Transform 
 				{
 					var Translation = Real3{0, 0, 0}
@@ -363,10 +349,9 @@ Level
 				}
 				Hierarchy 
 				{
-					Cog 
+					Cog [ContextId:8]
 					{
 						var Name = "GameCamera"
-						var LinkId = 8
 						Transform 
 						{
 							var Translation = Real3{0, 1.38189435, -3.56901026}
@@ -377,11 +362,7 @@ Level
 						{
 							var RenderInEditor = false
 							var RenderInGame = true
-							var RenderToViewport = true
-							var ForwardViewportEvents = false
 							var RenderOrder = 0
-							var NormalizedSize = Real2{1, 1}
-							var NormalizedOffset = Real2{0, 0}
 							var CameraPath = CogPath
 							{
 								var Path = "."
@@ -392,7 +373,7 @@ Level
 								var UpdatePathOnCogChange = true
 								var UpdateCogOnInitialize = true
 								var ResolvedNullErrorOccurred = false
-								var ResolvedCog = 8
+								var Cog = 8
 								var PathPreference0 = CogPathPreference.CogRelative
 								var PathPreference1 = CogPathPreference.SpaceRelative
 								var PathPreference2 = CogPathPreference.Absolute
@@ -407,14 +388,18 @@ Level
 								var UpdatePathOnCogChange = true
 								var UpdateCogOnInitialize = true
 								var ResolvedNullErrorOccurred = false
-								var ResolvedCog = 3
+								var Cog = 3
 								var PathPreference0 = CogPathPreference.CogRelative
 								var PathPreference1 = CogPathPreference.SpaceRelative
 								var PathPreference2 = CogPathPreference.Absolute
 							}
-							var Resolution = Real2{1920, 1080}
+							var ResolutionOrAspect = Integer2{1920, 1080}
+							var RenderToViewport = true
+							var ForwardViewportEvents = false
 							var ViewportScaling = ViewportScaling.Letterbox
 							var MarginColor = Real4{0, 0, 0, 1}
+							var NormalizedSize = Real2{1, 1}
+							var NormalizedOffset = Real2{0, 0}
 						}
 						Camera 
 						{
@@ -443,7 +428,7 @@ Level
 								var UpdatePathOnCogChange = true
 								var UpdateCogOnInitialize = true
 								var ResolvedNullErrorOccurred = false
-								var ResolvedCog = 6
+								var Cog = 7
 								var PathPreference0 = CogPathPreference.CogRelative
 								var PathPreference1 = CogPathPreference.SpaceRelative
 								var PathPreference2 = CogPathPreference.Absolute

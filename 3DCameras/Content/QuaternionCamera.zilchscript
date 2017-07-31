@@ -9,33 +9,26 @@
 // Moves with WASD, also uses 'q' and 'e' to pan along the world's up/down vector.
 class QuaternionCamera : ZilchComponent
 {
+  [Dependency] var Camera : Camera = null;
+  
   // The movement speed of the camera.
-  [Property]
-  var Speed : Real = 8.0;
+  [Property] var Speed : Real = 8.0;
 
   // The speed at which the camera can rotation. This has the units of radians per pixel.
-  [Property]
-  var LookSpeed : Real = 0.005;
+  [Property] var LookSpeed : Real = 0.005;
 
   // If this camera will run when the space is paused.
   // Used mostly to debug a paused game.
-  [Property]
-  var RunWhilePaused : Boolean = true;
+  [Property] var RunWhilePaused : Boolean = true;
 
   // If we want this camera to be able to rotate.
-  [Property]
-  var AllowRotation : Boolean = true;
+  [Property] var AllowRotation : Boolean = true;
 
   // If we want this camera to be able to translate.
-  [Property]
-  var AllowTranslation : Boolean = true;
+  [Property] var AllowTranslation : Boolean = true;
 
   // Whether or not the mouse is hidden and trapped by the camera.
-  [Property]
-  var MouseTrapped : Boolean = false;
-
-  [Dependency]
-  var Camera : Camera = null;
+  [Property] var MouseTrapped : Boolean = false;
 
   // The up/down delta from mouse move.
   var UpDelta : Real = 0.0;
@@ -168,14 +161,14 @@ class QuaternionCamera : ZilchComponent
     // Generate the up rotation (the rotation about our local x axis)
     var upRotation = Quaternion();
     // Bring our local x axis into our local space (ignore parent's transform)
-    var worldX = transform.TransformNormalLocal(Real3(1.0, 0.0, 0.0));
+    var worldX = transform.TransformNormalLocal(Real3.XAxis);
     worldX = Math.Normalize(worldX);
     // Generate the quaternion from that axis and an angle
     upRotation = Math.ToQuaternion(worldX, this.UpDelta);
     
     // Generate the side rotation (rotation about world y axis)
     var sideRotation = Quaternion();
-    sideRotation = Math.ToQuaternion(Real3(0.0,1.0,0.0), this.SideDelta);
+    sideRotation = Math.ToQuaternion(Real3.YAxis, this.SideDelta);
     
     // Make sure to multiply in the correct order, we have to look up then look to the side.
     // If we look to the side first, we will invalidate the up rotation we generated

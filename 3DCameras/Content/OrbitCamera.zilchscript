@@ -9,31 +9,22 @@
 // Zooms in and out towards the focal point with the scroll wheel.
 class OrbitCamera : ZilchComponent
 {
-  [Property]
-  var RotationSensitivity : Real = 0.01;
+  [Dependency] var Camera : Camera;
   
-  [Property]
-  var TranslationSensitivity : Real = 0.1;
+  [Property] var RotationSensitivity : Real = 0.01;
   
-  [Property]
-  var PanSensitivity : Real = 3.0;
+  [Property] var TranslationSensitivity : Real = 0.1;
+  
+  [Property] var PanSensitivity : Real = 3.0;
   
   // The minimum radius on the sphere. This controls the max that the camera can zoom in.
-  [Property]
-  var MinDistance : Real = 1.0;
+  [Property] var MinDistance : Real = 1.0;
   // The maximum radius on the sphere. This controls the max that the camera can zoom out.
-  [Property]
-  var MaxDistance : Real = 100.0;
-  
-  [Dependency]
-  var Camera : Camera = null;
-  
+  [Property] var MaxDistance : Real = 100.0;
   // Where the camera is looking at.
-  [Property]
-  var Target : Real3 = Real3(0.0, 0.0, 0.0);
+  [Property] var Target : Real3 = Real3(0.0, 0.0, 0.0);
   // The radius of the sphere that we are orbiting about. Controls the current zoom level.
-  [Property]
-  var Radius : Real = 5.0;
+  [Property] var Radius : Real = 5.0;
   
   // Spherical coordinates. These control our position on the sphere we're rotating about.
   var Phi : Real = Math.Pi * 0.5;
@@ -51,10 +42,9 @@ class OrbitCamera : ZilchComponent
     // We do all of our transform update logic during logic update
     Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
     
-    var viewport = this.Owner.CameraViewport;
     // Connect on the viewport for all the mouse events we need
-    Zero.Connect(viewport, Events.MouseMove, this.OnMouseMove);
-    Zero.Connect(viewport, Events.MouseScroll, this.OnMouseScroll);
+    Zero.Connect(this.Space, Events.MouseMove, this.OnMouseMove);
+    Zero.Connect(this.Space, Events.MouseScroll, this.OnMouseScroll);
   }
   
   function OnLogicUpdate(updateEvent : UpdateEvent)
@@ -101,7 +91,7 @@ class OrbitCamera : ZilchComponent
     movementW = movementW * this.PanSensitivity;
     
     // Compute the basis of the camera
-    var up = Real3(0.0, 1.0, 0.0);
+    var up = Real3.YAxis;
     
     // Use the world up and camera's forward to get the right vector
     var right = Math.Cross(forward, up);
@@ -139,7 +129,7 @@ class OrbitCamera : ZilchComponent
     transform.SetRotationBases(forward, up, right);
     
     // Make sure to clear out the translational delta of the mouse
-    this.MouseDelta = Real2(0.0, 0.0);
+    this.MouseDelta = Real2.Zero;
   }
   
   function OnMouseMove(viewportMouseEvent : ViewportMouseEvent)
