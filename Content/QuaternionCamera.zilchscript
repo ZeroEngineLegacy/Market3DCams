@@ -1,18 +1,19 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Copyright 2017 DigiPen USA Corporation, All Rights Reserved
 // Author: Zero Engine Team
-// Last updated by: Arend Danielek
-// Last update: 1/5/2017
+// Last updated by: Joshua Davis
+// Last update: 4/3/2018
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // First person camera that uses quaternions to build rotations. Rotates with right mouse.
 // Moves with WASD, also uses 'q' and 'e' to pan along the world's up/down vector.
 class QuaternionCamera : ZilchComponent
 {
-  [Dependency] var Camera : Camera = null;
+  [Dependency] var Transform : Transform;
+  [Dependency] var Camera : Camera;
   
   // The movement speed of the camera.
-  [Property] var Speed : Real = 8.0;
+  [Property] var MovementSpeed : Real = 8.0;
 
   // The speed at which the camera can rotation. This has the units of radians per pixel.
   [Property] var LookSpeed : Real = 0.005;
@@ -30,15 +31,10 @@ class QuaternionCamera : ZilchComponent
   // Whether or not the mouse is hidden and trapped by the camera.
   [Property] var MouseTrapped : Boolean = false;
 
-  // The up/down delta from mouse move.
-  var UpDelta : Real = 0.0;
-
-  // the left/right delta from mouse move.
-  var SideDelta : Real = 0.0;
-
-  // The total accumulation of the up/down angle (see spherical coordinates for the definition fo phi).
-  // Used to prevent wrapping around at the poles.
+  // The polar angle from the y-axis (see spherical coordinates for the definition fo phi).
   var Phi : Real = 0.0;
+  // The angle around the x-z plane
+  var Theta : Real = 0.0;
 
   // If the camera should rotate when the mouse moves
   // (currently triggered by right mouse up/down)
@@ -47,22 +43,20 @@ class QuaternionCamera : ZilchComponent
   function Initialize(initializer : CogInitializer)
   {
     // Get the viewport so we can listen to mouse events
-    var viewport = this.Owner.CameraViewport;
+    var viewportCog = this.Camera.CameraViewportCog;
     
-    Zero.Connect(viewport, Events.RightMouseDown, this.OnRightMouseDown);
-    Zero.Connect(viewport, Events.RightMouseUp, this.OnRightMouseUp);
-    Zero.Connect(viewport, Events.MouseMove, this.OnMouseMove);
+    Zero.Connect(viewportCog, Events.RightMouseDown, this.OnRightMouseDown);
+    Zero.Connect(viewportCog, Events.RightMouseUp, this.OnRightMouseUp);
+    Zero.Connect(viewportCog, Events.MouseMove, this.OnMouseMove);
     
     // If we run while paused then connect to frame update (happens every frame),
     // otherwise only listen on logic update (won't happen if paused)
+    var updateEventName = Events.LogicUpdate;
     if(this.RunWhilePaused)
     {
-      Zero.Connect(this.Space, Events.FrameUpdate, this.OnFrameUpdate);
+      updateEventName = Events.FrameUpdate;
     }
-    else
-    {
-      Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
-    }
+    Zero.Connect(this.Space, updateEventName, this.OnUpdate);
     
     // If we want to trap the mouse, then set the mouse to always be ready
     // and tell the viewport to trap the mouse (hides the cursor)
@@ -71,6 +65,41 @@ class QuaternionCamera : ZilchComponent
       this.MouseReady = true;
       Zero.Mouse.Trapped = true;
     }
+    
+    // Initialize phi and theta from the camera's initial transform values
+    var sphericalCoords = this.ComputeCurrentSphericalCoordinates();
+    this.Phi = sphericalCoords.X;
+    this.Theta = sphericalCoords.Y;
+  }
+  
+  function ComputeSphericalCoordinates(xBasis : Real3, yBasis : Real3, zBasis : Real3, vector : Real3) : Real2
+  {
+    // Phi is the angle measured from the y-axis
+    // Compute the angle of the vector from the y-basis vector
+    var phi = Math.ACos(Math.Dot(yBasis, vector));
+    
+    // Theta is the angle around the x-z plane. To compute the current theta we
+    // need to project the current vector onto the x and z basis vectors and use those to with ATan2.
+    var xzProjection = Math.ProjectOnPlane(vector, yBasis);
+    var zProj = Math.Dot(zBasis, xzProjection);
+    var xProj = Math.Dot(xBasis, xzProjection);
+    var theta = Math.ATan2(zProj, xProj);
+    
+    return Real2(phi, theta);
+  }
+  
+  function ComputeCurrentSphericalCoordinates() : Real2
+  {
+    var xBasis = -Real3.ZAxis;
+    var yBasis = Real3.YAxis;
+    var zBasis = -Real3.XAxis;
+    
+    // Compute the camera's current forward vector
+    var forward = this.Transform.TransformNormal(xBasis);
+    // Compute the spherical coordinates of this vector given the proper basis.
+    // We construct this basis so that theta == 0 matches the camera's forward
+    // with no rotation and theta == 90 is equal to a 90 degree rotation about the y-axis.
+    return this.ComputeSphericalCoordinates(xBasis, yBasis, zBasis, forward);
   }
 
   function OnRightMouseDown(viewportMouseEvent : MouseEvent)
@@ -96,16 +125,15 @@ class QuaternionCamera : ZilchComponent
     // then update the mouse deltas
     if(this.MouseReady)
     {
-      this.UpDelta = -viewportMouseEvent.Movement.Y * this.LookSpeed;
-      this.SideDelta = -viewportMouseEvent.Movement.X * this.LookSpeed;
+      var movement = viewportMouseEvent.Movement;
+      var upDelta = movement.Y * this.LookSpeed;
+      var sideDelta = -movement.X * this.LookSpeed;
       
       // To prevent wrapping around at the top, compute and clamp the
-      // total phi angle (see spherical coordinates) and then compute
-      // the actual delta that would be applied to get to our clamped value.
-      var halfPi = Math.Pi * 0.5;
-      var oldPhi = this.Phi;
-      this.Phi = Math.Clamp(this.Phi + this.UpDelta, -halfPi, halfPi);
-      this.UpDelta = this.Phi - oldPhi;
+      // total phi angle (see spherical coordinates).
+      var phiClamp = Real2(0, Math.Pi);
+      this.Phi = Math.Clamp(this.Phi + upDelta, phiClamp.X, phiClamp.Y);
+      this.Theta += sideDelta;
     }
   }
 
@@ -124,7 +152,7 @@ class QuaternionCamera : ZilchComponent
 
   function MoveCamera(updateEvent : UpdateEvent)
   {
-    var movement = Real3(0.0, 0.0, 0.0);
+    var movement = Real3.Zero;
     
     // Record keyboard movement to pan the camera
     if(Zero.Keyboard.KeyIsDown(Keys.A))
@@ -137,8 +165,8 @@ class QuaternionCamera : ZilchComponent
       movement.Z += 1.0;
     
     // We computed the direction in local space, bring it to the camera's world space
-    var current = this.Owner.Transform.Translation;
-    movement = this.Owner.Transform.TransformNormal(movement);
+    var current = this.Transform.Translation;
+    movement = this.Transform.TransformNormal(movement);
     
     // Add panning along the y-axis because it is nice.
     // Do this after the transform normal because we want the world up, not local up
@@ -148,48 +176,35 @@ class QuaternionCamera : ZilchComponent
       movement.Y += 1.0; 
     
     // Update the translation
-    var speed = updateEvent.Dt * this.Speed;
+    var speed = updateEvent.Dt * this.MovementSpeed;
     current += movement * speed;
-    this.Owner.Transform.Translation = current;
+    this.Transform.Translation = current;
   }
 
   function RotateCamera(updateEvent : UpdateEvent)
   {
-    // Cache the transform component
-    var transform = this.Owner.Transform;
+    var transform = this.Transform;
+    var xBasis = Real3.XAxis;
+    var yBasis = Real3.YAxis;
     
-    // Generate the up rotation (the rotation about our local x axis)
-    var upRotation = Quaternion();
-    // Bring our local x axis into our local space (ignore parent's transform)
-    var worldX = transform.TransformNormalLocal(Real3.XAxis);
-    worldX = Math.Normalize(worldX);
+    // Convert phi to an angle about the x-Basis (need to offset [0, 180] to [-90, 90])
+    var yAngle = this.Phi - Math.Pi / 2.0;
     // Generate the quaternion from that axis and an angle
-    upRotation = Math.ToQuaternion(worldX, this.UpDelta);
+    var upRotation = Math.ToQuaternion(xBasis, -yAngle);
     
-    // Generate the side rotation (rotation about world y axis)
-    var sideRotation = Quaternion();
-    sideRotation = Math.ToQuaternion(Real3.YAxis, this.SideDelta);
+    // Generate the side rotation (rotation about world y-Basis)
+    var sideRotation = Math.ToQuaternion(yBasis, this.Theta);
     
     // Make sure to multiply in the correct order, we have to look up then look to the side.
     // If we look to the side first, we will invalidate the up rotation we generated
     // (use local rotation incase we have a parent)
-    var endResult = Math.Multiply(upRotation, transform.LocalRotation);
-    endResult = Math.Multiply(sideRotation, endResult);
+    var endResult = Math.Multiply(sideRotation, upRotation);
     // Also make sure to normalize
     endResult = Math.Normalize(endResult);
-    transform.LocalRotation = endResult;
-    
-    // Clear the deltas
-    this.UpDelta = 0.0;
-    this.SideDelta = 0.0;
+    transform.WorldRotation = endResult;
   }
 
-  function OnLogicUpdate(updateEvent : UpdateEvent)
-  {
-    this.CameraMovement(updateEvent);
-  }
-
-  function OnFrameUpdate(updateEvent : UpdateEvent)
+  function OnUpdate(updateEvent : UpdateEvent)
   {
     this.CameraMovement(updateEvent);
   }
